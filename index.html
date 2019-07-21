@@ -1,0 +1,66 @@
+<!DOCTYPE html> 
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Hind+Madurai&display=swap" rel="stylesheet">
+  <link href="./css/general.css" rel="stylesheet">
+</head>
+<body>
+  <div id="wrapper">
+    <div id="container">
+  
+      <div id='group'>
+        <div id="chart">
+          <div class='header'>
+            <h1 style="margin-bottom:0px; padding:0px;font-weight: semi-bold;">KIRON'S STUDENTS</h1>
+
+            <p class='header-description'>Refugees coming to <span style='font-weight:900'>Germany</span> are ambitious and are active. But they continue to have transition problems into the education system and the labour market.<span style='font-weight:900'> The main goal of Kiron is to provide free learning opportunities to refugees and asylum seekers, regardless of their education background, gender and age.</span> The non-profit organization has developed an online study program to enable smooth access to higher education and short programmes with a closer labour market focus.</p>
+            <div id='clock'>
+              <p style="margin:0px; padding:0px;">Refugee became a Kiron student on:</p>
+              <h2 style="margin-top:0px; padding-right:10px;float:left;"></h2>
+              <div class='controls'>
+                <input 
+                 type="button" 
+                 class="btn"
+                 id="play"
+                 value="Play" />
+               </div>
+            </div>
+          </div>
+          <svg>
+          <defs>
+            <filter id="blur">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="20" />
+            </filter>
+          </defs>
+          </svg>
+        </div>
+        <p class='description'>Refugees coming to <span style='font-weight:900'>Germany</span> are ambitious and are active. But they continue to have transition problems into the education system and the labour market.<span style='font-weight:900'> The main goal of Kiron is to provide free learning opportunities to refugees and asylum seekers, regardless of their education background, gender and age.</span> The non-profit organization has developed an online study program to enable smooth access to higher education and short programmes with a closer labour market focus.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <svg>
+    <defs>
+      <linearGradient id="LinkStroke1" spreadMethod="pad">
+        <stop offset="10%" stop-color='#45ADA8'></stop>
+        <stop offset="90%" stop-color='#FABF4B'></stop>
+      </linearGradient>
+      <linearGradient id="LinkStroke2" spreadMethod="pad">
+        <stop offset="10%" stop-color='#FABF4B'></stop>
+        <stop offset="90%" stop-color='#45ADA8'></stop>
+      </linearGradient> 
+    </defs>
+  </svg>
+
+  <script src="./js/map.js"></script>
+  <script>
+  	main.run()
+  </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+ Category,Level,Percentage
+Total,Below qualifications,31
+Total,Adequate,44
+Total,Over Qualifications,25
+Women,Below qualifications,29
+Women,Adequate,55
+Women,Over Qualifications,16
+Men,Below qualifications,32
+Men,Adequate,43
+Men,Over Qualifications,25
+Specialists and experts,Below qualifications,81
+Specialists and experts,Adequate,19
+Specialists and experts,Over Qualifications,0
+Skilled,Below qualifications,45
+Skilled,Adequate,52
+Skilled,Over Qualifications,3
+Semi- and unskilled,Below qualifications,0
+Semi- and unskilled,Adequate,51
+Semi- and unskilled,Over Qualifications,49
+,,
+Figure,"Congruence between qualification of refugees and the required skill level in their jobs. Proportion of individuals aged between 18 and 65, in percent. ",
+Ref,https://www.bamf.de/SharedDocs/Anlagen/EN/Publikationen/Kurzanalysen/kurzanalyse1-2019-fortschritte-sprache-beschaeftigung.pdf?__blob=publicationFile,
