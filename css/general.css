@@ -6,6 +6,9 @@ body {
   font-family: 'Hind Madurai', sans-serif;
   color: #113893;
 }
+text {
+  font-family: 'Hind Madurai', sans-serif;
+}
 #wrapper {
   width: 100vw;
   height: 100vh;
@@ -64,7 +67,7 @@ body {
   fill: white; 
   opacity: 0.7;
 }
-rect { 
+.blurry { 
   position: absolute;
   top: 0;
   left: 0;

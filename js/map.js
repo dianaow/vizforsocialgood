@@ -27,7 +27,7 @@ var main = function () {
   var centroids = []
   var DEFAULT_MAP_COLOR = '#7F7F7F'
   var DEFAULT_MAP_STROKE = '#D9D9D9'
-  var DEFAULT_SELECTED_CTRY = '#7F7F7F'
+  var DEFAULT_SELECTED_CTRY = '#727272'
   var DEFAULT_PATH_WIDTH = 0.8
   var colorSource = '#45ADA8'
   var colorDestination = '#FABF4B'
@@ -71,6 +71,7 @@ var main = function () {
         .attr("class", "markers-group")
 
       chart.select("svg").append('rect')
+        .attr('class', 'blurry')
 
       loadData()
 
@@ -123,35 +124,7 @@ var main = function () {
 
         drawMap(world)
         updateMap('pct')
-
-        arcData = drawLinksMap(world, 'pct')
-        console.log(arcData)
-        // Create a path for each source/target pair.
-        var arcPaths = arcs.selectAll("path").data(arcData)
-
-        arcPaths.exit().remove()
-
-        arcPaths.enter().append("path")
-          .merge(arcPaths)
-          .attr('class', d=> 'line line-' + d.sourceName)
-          .attr('fill', 'none')
-          .attr('opacity', 1)
-          .attr('stroke-width', function(d) { return lineScale(d.value) })
-          .style("stroke", function(d,i) {
-            var sx = d.targetLocation[0] - d.sourceLocation[0]
-            return (sx > 0) ? 'url(#LinkStroke1)' : 'url(#LinkStroke2)'
-          })
-          .attr('d', function(d) { 
-            var a = Math.atan2(d.targetLocation[1] - d.sourceLocation[1], d.targetLocation[0] - d.sourceLocation[0]) * (180 / Math.PI)
-            if(d.sourceName=='Nigeria'){
-              return line(d, 'sourceLocation', 'targetLocation')
-            }
-            if(a>=-91 & a<90){
-              return arc(d, 'sourceLocation', 'targetLocation', 1)
-            } else {
-              return arc(d, 'sourceLocation', 'targetLocation', 2)
-            } 
-          })
+        drawLinksMap(world, 'pct')
 
         var scaleTime = d3.scaleTime().domain(d3.extent(entityData, d=>d.student_since))
         var days = scaleTime.ticks(d3.timeDay.every(1))
@@ -216,7 +189,52 @@ var main = function () {
            .attr('fill', DEFAULT_MAP_COLOR)
            .attr('stroke', DEFAULT_MAP_STROKE)
            .attr('stroke-width', '0.4px')
-        
+
+        var topCountries = []
+        for ( var i = 0; i < 10; i++) {
+          topCountries.push(connData[i]['country'])
+        }
+        topCountries.push("Germany")
+
+        var countryLabels = g.selectAll(".countryName")
+           .data(data)
+           .enter().append("g")
+           .attr("class", "countryName")
+           .attr('opacity', d => topCountries.indexOf(d.properties.name) != -1 ? 1 : 0)
+           .attr('fill', d => d.properties.name == 'Germany' ? '#113893' : colorSource )
+           .attr("transform", function(d) {
+              return (
+                 "translate(" + path.centroid(d)[0] + "," + (path.centroid(d)[1]+10).toString() + ")" // centroid of countries
+              );
+           })
+
+        // add the text to the label group showing country name
+        countryLabels
+           .append("text")
+           .style("text-anchor", "middle")
+           .attr("dx", d => d.properties.name == 'Palestine' ? -25 : 0)
+           .attr("dy", d => d.properties.name == 'Germany' ? -40 : (d.properties.name == 'Palestine' ? -10 : 0))
+           .attr('font-size', d => d.properties.name == 'Germany' ? '1em' : '0.8em')
+           .text(function(d) { return d.properties.name })
+           .call(getTextBox) // move text position to center of centroid
+
+        // add a background rectangle the same size as the text
+        countryLabels
+           .insert("rect", "text")
+           .attr("class", "countryLabelBg")
+           .attr('fill', 'white')
+           .attr('opacity', 0.7)
+           .attr("transform", function(d) {
+              return "translate(" + (d.bbox.x - 2) + "," + d.bbox.y + ")";
+           })
+           .attr("width", function(d) {
+              return d.bbox.width + 4;
+           })
+           .attr("height", function(d) {
+              return d.bbox.height;
+           })
+        ;
+
         // store an array of each country's centroid
         data.map(d=> {
           centroids.push({
@@ -304,7 +322,32 @@ var main = function () {
         }) 
         //console.log(arcData)
 
-        return arcData
+        var arcPaths = arcs.selectAll("path").data(arcData) // Create a path for each source/target pair.
+
+        arcPaths.exit().remove()
+
+        arcPaths.enter().append("path")
+          .merge(arcPaths)
+          .attr('class', d=> 'line line-' + d.sourceName)
+          .attr('fill', 'none')
+          .attr('opacity', 1)
+          .attr('stroke-linecap', 'round')
+          .attr('stroke-width', function(d) { return lineScale(d.value) })
+          .style("stroke", function(d,i) {
+            var sx = d.targetLocation[0] - d.sourceLocation[0]
+            return (sx > 0) ? 'url(#LinkStroke1)' : 'url(#LinkStroke2)'
+          })
+          .attr('d', function(d) { 
+            var a = Math.atan2(d.targetLocation[1] - d.sourceLocation[1], d.targetLocation[0] - d.sourceLocation[0]) * (180 / Math.PI)
+            if(d.sourceName=='Nigeria'){
+              return line(d, 'sourceLocation', 'targetLocation')
+            }
+            if(a>=-91 & a<90){
+              return arc(d, 'sourceLocation', 'targetLocation', 1)
+            } else {
+              return arc(d, 'sourceLocation', 'targetLocation', 2)
+            } 
+          })
 
       } 
 
@@ -389,7 +432,8 @@ var main = function () {
         const getRandomNumberInRange = (min, max) => Math.random() * (max - min) + min
         const getRandomValue = arr => arr[Math.floor(getRandomNumberInRange(0, arr.length))]
         var entity = entityData.find(d=>d.id == currentPersonId)
-        var path =  arcs.selectAll("path").filter(d=>d.country == entity.nationality).node()
+        var path =  arcs.selectAll("path").filter(d=>d.sourceName == entity.nationality).node()
+        console.log(entity)
         //if(path==null){
           //console.log(entity.nationality) // track which countries are missing paths
         //}
@@ -411,6 +455,12 @@ var main = function () {
   ///////////////////////////////////////////////////////////////////////////
   ///////////////////////////// Helper functions ////////////////////////////
   ///////////////////////////////////////////////////////////////////////////
+  function getTextBox(selection) {
+    selection.each(function(d) {
+      d.bbox = this.getBBox();
+    });
+  }
+
   function findCenters(r, p1, p2) {
     var pm = { x : 0.5 * (p1.x + p2.x) , y: 0.5*(p1.y+p2.y) } ;
     var perpABdx= - ( p2.y - p1.y );
@@ -441,12 +491,12 @@ var main = function () {
       var start = polarToCartesian(x, y, radius, endAngle);
       var end = polarToCartesian(x, y, radius, startAngle);
       var arcSweep = endAngle - startAngle <= 180 ? "0" : "1";
-      if (NUM == 1) {
+      if (NUM === 1) {
         var d = [
             "M", start.x, start.y, 
             "A", radius, radius, 0, arcSweep, 0, end.x, end.y
         ].join(" ");
-      } else {
+      } else if (NUM === 2){
         var d = [
             "M", end.x, end.y, 
             "A", radius, radius, 0, arcSweep, 0, start.x, start.y

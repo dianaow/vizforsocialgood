@@ -32,11 +32,6 @@
             </div>
           </div>
           <svg>
-          <defs>
-            <filter id="blur">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="20" />
-            </filter>
-          </defs>
           </svg>
         </div>
         <p class='description'>Refugees coming to <span style='font-weight:900'>Germany</span> are ambitious and are active. But they continue to have transition problems into the education system and the labour market.<span style='font-weight:900'> The main goal of Kiron is to provide free learning opportunities to refugees and asylum seekers, regardless of their education background, gender and age.</span> The non-profit organization has developed an online study program to enable smooth access to higher education and short programmes with a closer labour market focus.</p>
@@ -47,13 +42,18 @@
 
   <svg>
     <defs>
+      <filter id="blur">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="20" />
+      </filter>
+    </defs>
+    <defs>
       <linearGradient id="LinkStroke1" spreadMethod="pad">
-        <stop offset="10%" stop-color='#45ADA8'></stop>
-        <stop offset="90%" stop-color='#FABF4B'></stop>
+        <stop offset="0%" stop-color='#45ADA8' stop-opacity="0%"></stop>
+        <stop offset="90%" stop-color='#FABF4B' stop-opacity="100%"></stop>
       </linearGradient>
       <linearGradient id="LinkStroke2" spreadMethod="pad">
-        <stop offset="10%" stop-color='#FABF4B'></stop>
-        <stop offset="90%" stop-color='#45ADA8'></stop>
+        <stop offset="0%" stop-color='#FABF4B' stop-opacity="0%"></stop>
+        <stop offset="90%" stop-color='#45ADA8' stop-opacity="100%"></stop>
       </linearGradient> 
     </defs>
   </svg>
