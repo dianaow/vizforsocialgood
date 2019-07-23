@@ -8,8 +8,19 @@
   <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Hind+Madurai&display=swap" rel="stylesheet">
   <link href="./css/general.css" rel="stylesheet">
+  <link href="./vendor/css/loader.min.css" rel="stylesheet">
+  <script src="./vendor/js/d3.js"></script>
 </head>
 <body>
+
+  <div class="ui segment">
+    <div class="ui active dimmer" id="dimmer">
+      <div class="ui massive text loader">
+          <h3>Loading</h3>
+      </div>
+    </div>
+  </div>
+
   <div id="wrapper">
     <div id="container">
   
@@ -21,7 +32,6 @@
             <p class='header-description'>Refugees coming to <span style='font-weight:900'>Germany</span> are ambitious and are active. But they continue to have transition problems into the education system and the labour market.<span style='font-weight:900'> The main goal of Kiron is to provide free learning opportunities to refugees and asylum seekers, regardless of their education background, gender and age.</span> The non-profit organization has developed an online study program to enable smooth access to higher education and short programmes with a closer labour market focus.</p>
             <div id='clock'>
               <p style="margin:0px; padding:0px;">Refugee became a Kiron student on:</p>
-              <h2 style="margin-top:0px; padding-right:10px;float:left;"></h2>
               <div class='controls'>
                 <input 
                  type="button" 
@@ -29,6 +39,7 @@
                  id="play"
                  value="Play" />
                </div>
+              <h2 style="margin-top:0px; padding-right:10px;display:inline-block"></h2>
             </div>
           </div>
           <svg>
@@ -60,7 +71,8 @@
 
   <script src="./js/map.js"></script>
   <script>
-  	main.run()
+    d3.select('#dimmer').style('display', 'block')
+    main.run()
   </script>
 </body>
 </html>

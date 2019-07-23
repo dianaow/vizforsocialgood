@@ -11,11 +11,14 @@ var main = function () {
 
   if (ipad_landscape) {
     console.log('ipad_landscape')
+    var LEGEND_POS_Y = 150
     canvasDim = { width: window.innerWidth*0.96, height: window.innerHeight*0.96}
   } else if (ipad_portrait) {
     console.log('ipad_portrait')
+    var LEGEND_POS_Y = 50
     canvasDim = { width: window.innerWidth*0.96, height: window.innerHeight*0.4}
   } else {
+    var LEGEND_POS_Y = 150
     canvasDim = { width: window.innerWidth*0.96, height: window.innerHeight*0.96}    
   }
 
@@ -25,6 +28,7 @@ var main = function () {
   var chart = d3.select("#chart")
 
   var centroids = []
+  var connector_angles = []
   var DEFAULT_MAP_COLOR = '#7F7F7F'
   var DEFAULT_MAP_STROKE = '#D9D9D9'
   var DEFAULT_SELECTED_CTRY = '#727272'
@@ -32,7 +36,8 @@ var main = function () {
   var colorSource = '#45ADA8'
   var colorDestination = '#FABF4B'
   var playing = false
-
+  var initialized = false
+  
   var lineScale = d3.scaleSqrt()
     .range([0.3, 30])
     .domain([0, 100])
@@ -70,6 +75,9 @@ var main = function () {
       markersGroup = g.append("g")
         .attr("class", "markers-group")
 
+      legend = svg.append("g")
+          .attr("class","legend")
+
       chart.select("svg").append('rect')
         .attr('class', 'blurry')
 
@@ -92,6 +100,7 @@ var main = function () {
       function processData(error, geoJSON, csv, csv2) {
         
         if (error) throw error;
+        d3.select('#dimmer').style('display', 'none')
 
         connData = csv // density of connections from refugee country to Germany
         
@@ -125,23 +134,32 @@ var main = function () {
         drawMap(world)
         updateMap('pct')
         drawLinksMap(world, 'pct')
+        drawLegend()
 
         var scaleTime = d3.scaleTime().domain(d3.extent(entityData, d=>d.student_since))
         var days = scaleTime.ticks(d3.timeDay.every(1))
         d3.select('#clock > h2').html(formatTime(days[0]))  // populate the clock initially with the start of the recorded first day a refugee became a student 
         //timer = d3.interval(function(elapsed) { animateMarkers(days, elapsed) }, 200)
-   
+        
         d3.select('#play')  
           .on('click', function() {  // when user clicks the play button
             if(playing == false) {  // if the map is currently playing
-              timer = d3.interval(function(elapsed) { animateMarkers(days, elapsed) }, 200)
-              d3.select(this).attr('value', 'Stop');  // change the button label to stop
+              if(initialized==false) {
+                t = d3.zoomIdentity.translate(-600, -200).scale(1.8)
+                g.transition().duration(750).attr("transform", t)
+                timer = d3.pausableTimer(function(elapsed) { animateMarkers(days, elapsed) }, 250)
+                initialized=true
+                d3.select(this).attr('value', 'Stop');  // change the button label to stop
+              } else {
+                timer.resume()
+                d3.select(this).attr('value', 'Stop');  // change the button label to stop
+              }
               playing = true;   // change the status of the animation
-            } else {    // else if is currently playing
-              timer.stop();   // stop the animation by clearing the interval
+            } else if(playing == true) {    // else if is currently playing
+              timer.pause();  // stop the animation by clearing the interval
               d3.select(this).attr('value', 'Play');   // change the button label to play
               playing = false;   // change the status again
-            }
+            } 
         });
 
       }
@@ -214,7 +232,7 @@ var main = function () {
            .style("text-anchor", "middle")
            .attr("dx", d => d.properties.name == 'Palestine' ? -25 : 0)
            .attr("dy", d => d.properties.name == 'Germany' ? -40 : (d.properties.name == 'Palestine' ? -10 : 0))
-           .attr('font-size', d => d.properties.name == 'Germany' ? '1em' : '0.8em')
+           .attr('font-size', d => d.properties.name == 'Germany' ? '1em' : '0.7em')
            .text(function(d) { return d.properties.name })
            .call(getTextBox) // move text position to center of centroid
 
@@ -339,12 +357,16 @@ var main = function () {
           })
           .attr('d', function(d) { 
             var a = Math.atan2(d.targetLocation[1] - d.sourceLocation[1], d.targetLocation[0] - d.sourceLocation[0]) * (180 / Math.PI)
+            
             if(d.sourceName=='Nigeria'){
+              connector_angles.push({'country': d.sourceName, 'flip': 2})
               return line(d, 'sourceLocation', 'targetLocation')
             }
-            if(a>=-91 & a<90){
+            if(a>-90 & a<90){
+              connector_angles.push({'country': d.sourceName, 'flip': 1})
               return arc(d, 'sourceLocation', 'targetLocation', 1)
             } else {
+              connector_angles.push({'country': d.sourceName, 'flip': 2})
               return arc(d, 'sourceLocation', 'targetLocation', 2)
             } 
           })
@@ -356,7 +378,7 @@ var main = function () {
       ///////////////////////////////////////////////////////////////////////////////////
       let currentDayId = 0
       function animateMarkers(days, elapsed) {
-   
+    
         const sexAccessor = d => d.gender
         const ednAccessor = d => d.attended_university
         const xProgressAccessor = d => (elapsed - d.startTime) / 5000
@@ -367,62 +389,66 @@ var main = function () {
           } else if(ednAccessor(d) == 'FALSE'){
             return 'white'
           } else if(ednAccessor(d) == 'UNKNOWN'){
-            return 'black'
-          }
+            return 'red'
+          } 
         }
 
-        d3.select('#clock > h2').html(formatTime(days[currentDayId]))  // update the clock
-        var dayData= entityData.filter(d=>d.student_since == days[currentDayId].toString())
-
-        people = [
-          ...people,
-          ...d3.range(dayData.length).map(() => generatePerson(elapsed)),
-        ]
-        currentDayId++
+        if(currentDayId < days.length){
+          var dayData= entityData.filter(d=>d.student_since == days[currentDayId].toString())
+          d3.select('#clock > h2').html(formatTime(days[currentDayId]))  // update the clock
+          people = [
+            ...people,
+            ...d3.range(dayData.length).map(() => generatePerson(elapsed)),
+          ]
+          currentDayId++
+        }
 
         const m1 = markersGroup.selectAll(".marker-circle")
           .data(people.filter(function(d){ 
-            return xProgressAccessor(d) > 0  && xProgressAccessor(d) < 1 && sexAccessor(d) == 'female'
+            return xProgressAccessor(d) > 0  && xProgressAccessor(d) < 1
           }), d => d.id)
 
         m1.enter().append("circle")
           .attr("class", "marker marker-circle")
-          .attr("r", 3)
-          .attr("fill", d=>fillCategory(d))
+          .attr("r", 1.7)
+          .attr('fill', d=> sexAccessor(d) == 'male' ? '#113893' : 'white')
+          //.attr("fill", d=>fillCategory(d))
 
         m1.exit().remove()
 
-        const trianglePoints = [
-          "-3,  4",
-          " 0, -4",
-          " 3,  4",
-        ].join(" ")
-        const m2 = markersGroup.selectAll(".marker-triangle")
-          .data(people.filter(function(d){ 
-            return xProgressAccessor(d) > 0  && xProgressAccessor(d) < 1 && sexAccessor(d) == 'male'
-          }), d => d.id)
+        //const trianglePoints = [
+          //"-4,  5",
+          //" 0, -5",
+          //" 4,  5",
+        //].join(" ")
+        //const m2 = markersGroup.selectAll(".marker-triangle")
+          //.data(people.filter(function(d){ 
+            //return xProgressAccessor(d) > 0  && xProgressAccessor(d) < 1 && sexAccessor(d) == 'female'
+          //}), d => d.id)
 
-        m2.enter().append("polygon")
-          .attr("class", "marker marker-triangle")
-          .attr("points", trianglePoints)
-          .attr("fill", d=>fillCategory(d))
+        //m2.enter().append("polygon")
+          //.attr("class", "marker marker-triangle")
+          //.attr("points", trianglePoints)
+          //.attr('fill', '#113893')
+          //.attr("fill", d=>fillCategory(d))
 
-        m2.exit().remove()
+        //m2.exit().remove()
 
         const markers = d3.selectAll(".marker")
 
         markers.style("transform", (d,i) => {
           var xScale = d3.scaleLinear()
-            .domain([0, 1])
+            .domain(d.flip == 1 ? [0.98, 0] : [0, 0.98])
             .range([0, d.path ? d.path.getTotalLength() : 0])
             .clamp(true)
 
-          var currentPos = d.path ? d.path.getPointAtLength(xScale(xProgressAccessor(d))) : {x: 0, y: 0}
+        var currentPos = d.path ? d.path.getPointAtLength(xScale(xProgressAccessor(d))) : {x: 0, y: 0}
           return `translate(${ currentPos.x }px, ${ currentPos.y }px)`
-        })
+        })        
         .attr('opacity', d=> d.path ? 1 : 0)
 
         //if (elapsed > 10000) timer.stop();
+    
       }
       
       let people = []
@@ -433,7 +459,8 @@ var main = function () {
         const getRandomValue = arr => arr[Math.floor(getRandomNumberInRange(0, arr.length))]
         var entity = entityData.find(d=>d.id == currentPersonId)
         var path =  arcs.selectAll("path").filter(d=>d.sourceName == entity.nationality).node()
-        console.log(entity)
+        var country = connector_angles.find(d=>d.country == entity.nationality)
+        var flip = country ? country.flip : 1
         //if(path==null){
           //console.log(entity.nationality) // track which countries are missing paths
         //}
@@ -441,11 +468,52 @@ var main = function () {
         return {
           id: currentPersonId,
           path: path,
-          startTime: elapsed,
+          startTime: elapsed + getRandomNumberInRange(0, 10),
           country: entity.nationality,
           gender: entity.gender,
           attended_university: entity.attended_university,
+          flip: flip
         }
+      }
+
+      function drawLegend() {
+
+        const legendGroup = legend.append("g")
+          .attr("class", "legend")
+          .attr("transform", `translate(${10}, ${LEGEND_POS_Y})`)
+
+        const femaleLegend = legendGroup.append("g")
+            .attr("transform", `translate(${0}, 0)`)
+
+        femaleLegend.append("circle")
+            .attr("r", 5.5)
+            .attr('fill', 'white')
+            .attr("transform", "translate(15, 0)")
+
+        femaleLegend.append("text")
+            .attr("class", "legend-text-left")
+            .text("Female")
+            .attr('font-size', '11px')
+            .attr('fill', 'white')
+            .attr("x", 0)
+            .attr("y", -10)
+
+        const maleLegend = legendGroup.append("g")
+            .attr("transform", `translate(${60}, 0)`)
+
+        maleLegend.append("circle")
+            .attr("r", 5.5)
+            .attr('fill', '#113893')
+            .attr("transform", "translate(5, 0)")
+
+        maleLegend.append("text")
+            .attr("class", "legend-text-right")
+            .text("Male")
+            .attr('font-size', '11px')
+            .attr('fill', '#113893')
+            .attr("x", 0)
+            .attr("y", -10)
+
       }
 
     } 
