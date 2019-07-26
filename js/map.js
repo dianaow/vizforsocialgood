@@ -3,7 +3,7 @@ var main = function () {
   ///////////////////////////////////////////////////////////////////////////
   ///////////////////////////////// Globals /////////////////////////////////
   /////////////////////////////////////////////////////////////////////////// 
-  var connData, entityData, map, arcs, markersGroup
+  var connData, entityData, map, arcs, markersGroup, xTimeScale, handle, label
   var ipad_landscape = Math.min(window.innerWidth, screen.width)<=1366 & (Math.abs(screen.orientation.angle == 90))
   var ipad_portrait = Math.min(window.innerWidth, screen.width)<=1024 & (Math.abs(screen.orientation.angle == 0))
   var laptop = Math.min(window.innerWidth, screen.width) > 1024
@@ -11,14 +11,17 @@ var main = function () {
 
   if (ipad_landscape) {
     console.log('ipad_landscape')
+    var LEGEND_POS_X = 10
     var LEGEND_POS_Y = 150
     canvasDim = { width: window.innerWidth*0.96, height: window.innerHeight*0.96}
   } else if (ipad_portrait) {
     console.log('ipad_portrait')
+    var LEGEND_POS_X = 10
     var LEGEND_POS_Y = 50
     canvasDim = { width: window.innerWidth*0.96, height: window.innerHeight*0.4}
   } else {
-    var LEGEND_POS_Y = 150
+    var LEGEND_POS_X = 10
+    var LEGEND_POS_Y = 138
     canvasDim = { width: window.innerWidth*0.96, height: window.innerHeight*0.96}    
   }
 
@@ -44,6 +47,7 @@ var main = function () {
 
   var formatTime = d3.timeFormat("%d %B %Y") // eg 16 Oct 2015
   var parseDate = d3.timeParse("%Y-%m-%d")
+  var formatDate = d3.timeFormat("%b %Y");
 
   ///////////////////////////////////////////////////////////////////////////
   ///////////////////////////////// Initialize //////////////////////////////
@@ -138,7 +142,8 @@ var main = function () {
 
         var scaleTime = d3.scaleTime().domain(d3.extent(entityData, d=>d.student_since))
         var days = scaleTime.ticks(d3.timeDay.every(1))
-        d3.select('#clock > h2').html(formatTime(days[0]))  // populate the clock initially with the start of the recorded first day a refugee became a student 
+        slider(days)
+        //d3.select('#clock > h2').html(formatTime(days[0]))  // populate the clock initially with the start of the recorded first day a refugee became a student 
         //timer = d3.interval(function(elapsed) { animateMarkers(days, elapsed) }, 200)
         
         d3.select('#play')  
@@ -147,7 +152,7 @@ var main = function () {
               if(initialized==false) {
                 t = d3.zoomIdentity.translate(-600, -200).scale(1.8)
                 g.transition().duration(750).attr("transform", t)
-                timer = d3.pausableTimer(function(elapsed) { animateMarkers(days, elapsed) }, 250)
+                timer = d3.pausableTimer(function(elapsed) { animateMarkers(days, elapsed, 0) }, 250)
                 initialized=true
                 d3.select(this).attr('value', 'Stop');  // change the button label to stop
               } else {
@@ -376,8 +381,8 @@ var main = function () {
       ///////////////////////////////////////////////////////////////////////////////////
       //////////////////////////// Animate markers moving along path ////////////////////
       ///////////////////////////////////////////////////////////////////////////////////
-      let currentDayId = 0
-      function animateMarkers(days, elapsed) {
+      var currentDayId = 0
+      function animateMarkers(days, elapsed, initDayId) {
     
         const sexAccessor = d => d.gender
         const ednAccessor = d => d.attended_university
@@ -393,9 +398,10 @@ var main = function () {
           } 
         }
 
+        currentDayId = currentDayId + initDayId
         if(currentDayId < days.length){
           var dayData= entityData.filter(d=>d.student_since == days[currentDayId].toString())
-          d3.select('#clock > h2').html(formatTime(days[currentDayId]))  // update the clock
+          //d3.select('#clock > h2').html(formatTime(days[currentDayId]))  // update the clock
           people = [
             ...people,
             ...d3.range(dayData.length).map(() => generatePerson(elapsed)),
@@ -449,6 +455,13 @@ var main = function () {
 
         //if (elapsed > 10000) timer.stop();
     
+        // update position and text of label according to slider scale
+        console.log(currentDayId)
+        handle.attr("cx", xTimeScale(days[currentDayId]));
+        label
+          .attr("x", xTimeScale(days[currentDayId]))
+          .text(formatDate(days[currentDayId]))
+          
       }
       
       let people = []
@@ -480,7 +493,7 @@ var main = function () {
 
         const legendGroup = legend.append("g")
           .attr("class", "legend")
-          .attr("transform", `translate(${10}, ${LEGEND_POS_Y})`)
+          .attr("transform", `translate(${LEGEND_POS_X}, ${LEGEND_POS_Y})`)
 
         const femaleLegend = legendGroup.append("g")
             .attr("transform", `translate(${0}, 0)`)
@@ -516,6 +529,66 @@ var main = function () {
 
       }
 
+      function slider(days) {
+
+        var currentValue = 0;
+        var targetValue = 700;
+        var daysString = days.map(d=>formatTime(d))
+
+        xTimeScale = d3.scaleTime()
+            .domain([days[0], days[days.length-1]])
+            .range([0, targetValue])
+            .clamp(true);
+
+        var slider = svg.append("g")
+            .attr("class", "slider")
+            .attr("transform", "translate(" + 300 + "," + 75 + ")");
+
+        slider.append("line")
+            .attr("class", "track")
+            .attr("x1", xTimeScale.range()[0])
+            .attr("x2", xTimeScale.range()[1])
+          .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+            .attr("class", "track-inset")
+          .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+            .attr("class", "track-overlay")
+            .call(d3.drag()
+                .on("start.interrupt", function() { slider.interrupt(); })
+                .on("start drag", function() {
+                  currentValue = d3.event.x;
+                  x = xTimeScale(xTimeScale.invert(currentValue))
+                  currentDayId = daysString.indexOf(formatTime(xTimeScale.invert(currentValue)))
+                  console.log(currentDayId)
+                  handle.attr("cx", x)
+                  label
+                    .attr("x", x)
+                    .text(formatDate(xTimeScale.invert(currentValue)))
+                })
+            );
+
+        slider.insert("g", ".track-overlay")
+            .attr("class", "ticks")
+            .attr("transform", "translate(0," + 18 + ")")
+          .selectAll("text")
+            .data(xTimeScale.ticks(10))
+            .enter()
+            .append("text")
+            .attr("x", xTimeScale)
+            .attr("y", 10)
+            .attr("text-anchor", "middle")
+            .text(function(d) { return formatDate(d); });
+
+        handle = slider.insert("circle", ".track-overlay")
+            .attr("class", "handle")
+            .attr("r", 9);
+
+        label = slider.append("text")  
+            .attr("class", "label")
+            .attr("text-anchor", "middle")
+            .text(formatDate(days[0]))
+            .attr("transform", "translate(0," + (-25) + ")")
+
+      }
     } 
 
   }
