@@ -4,21 +4,28 @@ var main = function () {
   ///////////////////////////////// Globals /////////////////////////////////
   /////////////////////////////////////////////////////////////////////////// 
   var connData, entityData, map, arcs, markersGroup, xTimeScale, handle, label
-  var ipad_landscape = Math.min(window.innerWidth, screen.width)<=1366 & (Math.abs(screen.orientation.angle == 90))
+
+  var ipadPRO_landscape = Math.min(window.innerWidth, screen.width)>1024 & Math.min(window.innerWidth, screen.width)<=1366 & (Math.abs(screen.orientation.angle == 90))
+  var ipad_landscape = Math.min(window.innerWidth, screen.width)<=1024 & (Math.abs(screen.orientation.angle == 90))
   var ipad_portrait = Math.min(window.innerWidth, screen.width)<=1024 & (Math.abs(screen.orientation.angle == 0))
   var laptop = Math.min(window.innerWidth, screen.width) > 1024
   var desktop = Math.min(window.innerWidth, screen.width) > 1680
 
-  if (ipad_landscape) {
+  if (ipadPRO_landscape) {
+    console.log('ipadPRO_landscape')
+    var LEGEND_POS_X = 10
+    var LEGEND_POS_Y = 120
+    canvasDim = { width: window.innerWidth*0.96, height: window.innerHeight*0.96}
+  } else if (ipad_landscape) {
     console.log('ipad_landscape')
     var LEGEND_POS_X = 10
-    var LEGEND_POS_Y = 150
+    var LEGEND_POS_Y = 160
     canvasDim = { width: window.innerWidth*0.96, height: window.innerHeight*0.96}
   } else if (ipad_portrait) {
     console.log('ipad_portrait')
     var LEGEND_POS_X = 10
     var LEGEND_POS_Y = 50
-    canvasDim = { width: window.innerWidth*0.96, height: window.innerHeight*0.4}
+    canvasDim = { width: window.innerWidth*0.96, height: window.innerHeight*0.5}
   } else {
     var LEGEND_POS_X = 10
     var LEGEND_POS_Y = 138
@@ -29,6 +36,8 @@ var main = function () {
   var width = canvasDim.width - margin.left - margin.right 
   var height = canvasDim.height - margin.top - margin.bottom 
   var chart = d3.select("#chart")
+  var sidebar_chart = d3.select(".sidebar")
+  var sidebarChart_width = 250
 
   var centroids = []
   var connector_angles = []
@@ -36,19 +45,23 @@ var main = function () {
   var DEFAULT_MAP_STROKE = '#D9D9D9'
   var DEFAULT_SELECTED_CTRY = '#727272'
   var DEFAULT_PATH_WIDTH = 0.8
+  var KIRON_COLOR = '#113893'
   var colorSource = '#45ADA8'
   var colorDestination = '#FABF4B'
   var playing = false
   var initialized = false
-  
+  var dragged = false
+  var initDayId = 0
+  var currentDayId = 0
+
   var lineScale = d3.scaleSqrt()
     .range([0.3, 30])
     .domain([0, 100])
 
-  var formatTime = d3.timeFormat("%d %B %Y") // eg 16 Oct 2015
-  var parseDate = d3.timeParse("%Y-%m-%d")
+  var formatTime = d3.timeFormat("%d %b %Y") // eg 16 Oct 2015
   var formatDate = d3.timeFormat("%b %Y");
-
+  var parseDate = d3.timeParse("%Y-%m-%d")
+  
   ///////////////////////////////////////////////////////////////////////////
   ///////////////////////////////// Initialize //////////////////////////////
   /////////////////////////////////////////////////////////////////////////// 
@@ -85,6 +98,11 @@ var main = function () {
       chart.select("svg").append('rect')
         .attr('class', 'blurry')
 
+      var sidebar_svg = sidebar_chart.select("svg")
+        .attr('class', 'sidebar')
+        .attr("width", 275 + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+
       loadData()
 
       ///////////////////////////////////////////////////////////////////////////
@@ -97,17 +115,21 @@ var main = function () {
           .defer(d3.json, './raw-data/map.geo.json') // country geometries
           .defer(d3.csv, './processed-data/country_stats.csv') // total refugee stock per country
           .defer(d3.csv, './processed-data/students_processed.csv') // details of each student
+          .defer(d3.csv, './processed-data/semester_gender_stats.csv') // rollup sum of student entry to Kiron (breakdown by gender)
+          .defer(d3.csv, './processed-data/country_edn_stats.csv') // rollup sum of student entry to Kiron (breakdown by gender)
           .await(processData);   
 
       }
 
-      function processData(error, geoJSON, csv, csv2) {
+      function processData(error, geoJSON, csv, csv2, csv3, csv4) {
         
         if (error) throw error;
         d3.select('#dimmer').style('display', 'none')
 
-        connData = csv // density of connections from refugee country to Germany
-        
+        connData = csv
+        semester_gender_Data = csv3
+        country_edn_Data = csv4
+
         entityData = csv2.map((d,i) => {
           return {
             id: i,
@@ -135,10 +157,21 @@ var main = function () {
           }
         }
 
-        drawMap(world)
+        var top_countries = []
+        for ( var i = 0; i < 10; i++) {
+          if(connData[i]){
+            top_countries.push({'index':i, 'country': connData[i]['country'], 'metric': connData[i]['pct']})
+          }
+        }
+        top_countries.push({'index':11, 'country': 'Germany', 'metric': 0})
+        topCountries_list = top_countries.map(d=>d.country)
+
+        drawMap(world, topCountries_list)
         updateMap('pct')
         drawLinksMap(world, 'pct')
         drawLegend()
+        countriesBarChart(top_countries)
+        stackedBarChart(country_edn_Data, topCountries_list)
 
         var scaleTime = d3.scaleTime().domain(d3.extent(entityData, d=>d.student_since))
         var days = scaleTime.ticks(d3.timeDay.every(1))
@@ -150,13 +183,19 @@ var main = function () {
           .on('click', function() {  // when user clicks the play button
             if(playing == false) {  // if the map is currently playing
               if(initialized==false) {
-                t = d3.zoomIdentity.translate(-600, -200).scale(1.8)
+                t = d3.zoomIdentity.translate(-750, -150).scale(1.8)
                 g.transition().duration(750).attr("transform", t)
+                currentDayId = 0
                 timer = d3.pausableTimer(function(elapsed) { animateMarkers(days, elapsed, 0) }, 250)
                 initialized=true
                 d3.select(this).attr('value', 'Stop');  // change the button label to stop
               } else {
-                timer.resume()
+                if(dragged == true) {
+                  currentDayId = 0
+                  timer = d3.pausableTimer(function(elapsed) { animateMarkers(days, elapsed, initDayId) }, 250)
+                } else {
+                  timer.resume()
+                }
                 d3.select(this).attr('value', 'Stop');  // change the button label to stop
               }
               playing = true;   // change the status of the animation
@@ -173,14 +212,14 @@ var main = function () {
       //////////////////////////////// Render map ///////////////////////////////
       ///////////////////////////////////////////////////////////////////////////
 
-      if (ipad_landscape) {
+      if (ipadPRO_landscape) {
         var scale = width/4.2
         var translateX = -40
-        var translateY = 0
+        var translateY = 40
       } else if (ipad_portrait) {
         var scale = width/3.5 
         var translateX = -40
-        var translateY = 20
+        var translateY = 80
       } else if (desktop){
         var scale = width/4.2
         var translateX = -80
@@ -199,7 +238,7 @@ var main = function () {
       var path = d3.geoPath()
          .projection(projection)
       
-      function drawMap(data) {
+      function drawMap(data, topCountries_list) {
 
         // draw a path for each feature/country
         countriesPaths = map
@@ -213,18 +252,12 @@ var main = function () {
            .attr('stroke', DEFAULT_MAP_STROKE)
            .attr('stroke-width', '0.4px')
 
-        var topCountries = []
-        for ( var i = 0; i < 10; i++) {
-          topCountries.push(connData[i]['country'])
-        }
-        topCountries.push("Germany")
-
         var countryLabels = g.selectAll(".countryName")
            .data(data)
            .enter().append("g")
            .attr("class", "countryName")
-           .attr('opacity', d => topCountries.indexOf(d.properties.name) != -1 ? 1 : 0)
-           .attr('fill', d => d.properties.name == 'Germany' ? '#113893' : colorSource )
+           .attr('opacity', d => topCountries_list.indexOf(d.properties.name) != -1 ? 1 : 0)
+           .attr('fill', d => d.properties.name == 'Germany' ? KIRON_COLOR : colorSource )
            .attr("transform", function(d) {
               return (
                  "translate(" + path.centroid(d)[0] + "," + (path.centroid(d)[1]+10).toString() + ")" // centroid of countries
@@ -267,6 +300,8 @@ var main = function () {
           })
         })
 
+        interactive(countriesPaths)
+        interactive(d3.selectAll('.countryName'), topCountries_list)
       }
 
       ///////////////////////////////////////////////////////////////////////////
@@ -277,7 +312,7 @@ var main = function () {
       const mapHeight = svg.node().getBoundingClientRect().height;
 
       const zoom = d3.zoom()
-        .scaleExtent([1, 2])
+        .scaleExtent([1, 3])
         .translateExtent([[-mapWidth, -mapHeight], [mapWidth, mapHeight]])
         .extent([[0,0], [mapWidth, mapHeight]])
         .on("zoom", zoomed)
@@ -296,7 +331,7 @@ var main = function () {
       ////////////////////////////////////////////////////////////////////////////////////
       //////////////////////////////////// Chloropleth map ///////////////////////////////
       //////////////////////////////////////////////////////////////////////////////////// 
-
+ 
       function updateMap(X) {
 
         countriesPaths
@@ -307,6 +342,33 @@ var main = function () {
               return DEFAULT_SELECTED_CTRY
             }})
 
+      }
+
+      ////////////////////////////////////////////////////////////////////////////////////
+      //////////////////////////////////// Interactive map ///////////////////////////////
+      //////////////////////////////////////////////////////////////////////////////////// 
+
+      function interactive(obj, topCountries_list) {
+
+        obj
+          .on("mousemove", function(d) {
+            doMapActions(d.properties.name) 
+          })
+          .on("mouseout",  function(d) { 
+            undoMapActions()
+          })
+
+      }
+
+      function doMapActions(country) {
+        d3.selectAll(".countryName")
+          .filter(function(d) { return d.properties.name == country})
+          .attr('opacity', 1)     
+      }
+
+      function undoMapActions() {
+        d3.selectAll(".countryName")
+          .attr('opacity', d => topCountries_list.indexOf(d.properties.name) != -1 ? 1 : 0)
       }
 
       ////////////////////////////////////////////////////////////////////////////////////
@@ -345,7 +407,7 @@ var main = function () {
         }) 
         //console.log(arcData)
 
-        var arcPaths = arcs.selectAll("path").data(arcData) // Create a path for each source/target pair.
+        var arcPaths = arcs.selectAll("path").data(arcData, d=>d.id) // Create a path for each source/target pair.
 
         arcPaths.exit().remove()
 
@@ -363,16 +425,18 @@ var main = function () {
           .attr('d', function(d) { 
             var a = Math.atan2(d.targetLocation[1] - d.sourceLocation[1], d.targetLocation[0] - d.sourceLocation[0]) * (180 / Math.PI)
             
-            if(d.sourceName=='Nigeria'){
+            if(d.sourceName=='Nigeria' | d.sourceName=='Niger' | d.sourceName=='Benin' | d.sourceName=='Togo' | d.sourceName=='Mali'){
               connector_angles.push({'country': d.sourceName, 'flip': 2})
               return line(d, 'sourceLocation', 'targetLocation')
             }
-            if(a>-90 & a<90){
-              connector_angles.push({'country': d.sourceName, 'flip': 1})
-              return arc(d, 'sourceLocation', 'targetLocation', 1)
+            if(a>=-90 & a<=90){
+              var path = arc(d, 'sourceLocation', 'targetLocation', 1)
+              path ? connector_angles.push({'country': d.sourceName, 'flip': 1}) : connector_angles.push({'country': d.sourceName, 'flip': 2})
+              return path ? path : line(d, 'sourceLocation', 'targetLocation')
             } else {
               connector_angles.push({'country': d.sourceName, 'flip': 2})
-              return arc(d, 'sourceLocation', 'targetLocation', 2)
+              var path = arc(d, 'sourceLocation', 'targetLocation', 2)
+              return path ? path : line(d, 'sourceLocation', 'targetLocation')
             } 
           })
 
@@ -381,7 +445,7 @@ var main = function () {
       ///////////////////////////////////////////////////////////////////////////////////
       //////////////////////////// Animate markers moving along path ////////////////////
       ///////////////////////////////////////////////////////////////////////////////////
-      var currentDayId = 0
+
       function animateMarkers(days, elapsed, initDayId) {
     
         const sexAccessor = d => d.gender
@@ -390,7 +454,7 @@ var main = function () {
 
         function fillCategory(d) {
           if(ednAccessor(d) == 'TRUE'){
-            return '#113893'
+            return KIRON_COLOR
           } else if(ednAccessor(d) == 'FALSE'){
             return 'white'
           } else if(ednAccessor(d) == 'UNKNOWN'){
@@ -398,9 +462,9 @@ var main = function () {
           } 
         }
 
-        currentDayId = currentDayId + initDayId
-        if(currentDayId < days.length){
-          var dayData= entityData.filter(d=>d.student_since == days[currentDayId].toString())
+        currentDayIdNew = currentDayId + initDayId
+        if(currentDayIdNew < days.length){
+          var dayData= entityData.filter(d=>d.student_since == days[currentDayIdNew].toString())
           //d3.select('#clock > h2').html(formatTime(days[currentDayId]))  // update the clock
           people = [
             ...people,
@@ -417,7 +481,7 @@ var main = function () {
         m1.enter().append("circle")
           .attr("class", "marker marker-circle")
           .attr("r", 1.7)
-          .attr('fill', d=> sexAccessor(d) == 'male' ? '#113893' : 'white')
+          .attr('fill', d=> sexAccessor(d) == 'male' ? KIRON_COLOR : 'white')
           //.attr("fill", d=>fillCategory(d))
 
         m1.exit().remove()
@@ -454,13 +518,13 @@ var main = function () {
         .attr('opacity', d=> d.path ? 1 : 0)
 
         //if (elapsed > 10000) timer.stop();
-    
         // update position and text of label according to slider scale
-        console.log(currentDayId)
-        handle.attr("cx", xTimeScale(days[currentDayId]));
-        label
-          .attr("x", xTimeScale(days[currentDayId]))
-          .text(formatDate(days[currentDayId]))
+        if(currentDayIdNew < days.length){
+          handle.attr("cx", xTimeScale(days[currentDayIdNew]));
+          label
+            .attr("x", xTimeScale(days[currentDayIdNew]))
+            .text(formatTime(days[currentDayIdNew]))
+        }
           
       }
       
@@ -471,7 +535,7 @@ var main = function () {
         const getRandomNumberInRange = (min, max) => Math.random() * (max - min) + min
         const getRandomValue = arr => arr[Math.floor(getRandomNumberInRange(0, arr.length))]
         var entity = entityData.find(d=>d.id == currentPersonId)
-        var path =  arcs.selectAll("path").filter(d=>d.sourceName == entity.nationality).node()
+        var path =  entity.nationality == "Germany" ? null : arcs.selectAll("path").filter(d=>d.sourceName == entity.nationality).node()
         var country = connector_angles.find(d=>d.country == entity.nationality)
         var flip = country ? country.flip : 1
         //if(path==null){
@@ -479,7 +543,7 @@ var main = function () {
         //}
         currentPersonId++
         return {
-          id: currentPersonId,
+          id: currentDayIdNew,
           path: path,
           startTime: elapsed + getRandomNumberInRange(0, 10),
           country: entity.nationality,
@@ -488,6 +552,10 @@ var main = function () {
           flip: flip
         }
       }
+
+      ///////////////////////////////////////////////////////////////////////////////////
+      //////////////////////////////////// Create legend ////////////////////////////////
+      ///////////////////////////////////////////////////////////////////////////////////
 
       function drawLegend() {
 
@@ -529,10 +597,30 @@ var main = function () {
 
       }
 
+      ///////////////////////////////////////////////////////////////////////////////////
+      ////////////////////////////////// Create slider //////////////////////////////////
+      ///////////////////////////////////////////////////////////////////////////////////
       function slider(days) {
 
+        if (ipadPRO_landscape) {
+          var targetValue = Math.min(window.innerWidth, screen.width) * 0.65
+          var sliderPosX = Math.min(window.innerWidth, screen.width) * 0.28
+          var sliderPosY = 75
+        } else if (ipad_portrait) {
+          var targetValue = Math.min(window.innerWidth, screen.width) * 0.8
+          var sliderPosX = Math.min(window.innerWidth, screen.width) * 0.15
+           var sliderPosY = 45
+        } else if (desktop){
+          var targetValue = Math.min(window.innerWidth, screen.width) * 0.63 
+          var sliderPosX = Math.min(window.innerWidth, screen.width) * 0.32
+          var sliderPosY = 75
+        } else {
+          var targetValue = Math.min(window.innerWidth, screen.width) * 0.63
+          var sliderPosX = Math.min(window.innerWidth, screen.width) * 0.32
+          var sliderPosY = 75
+        }
+
         var currentValue = 0;
-        var targetValue = 700;
         var daysString = days.map(d=>formatTime(d))
 
         xTimeScale = d3.scaleTime()
@@ -542,7 +630,7 @@ var main = function () {
 
         var slider = svg.append("g")
             .attr("class", "slider")
-            .attr("transform", "translate(" + 300 + "," + 75 + ")");
+            .attr("transform", "translate(" + sliderPosX + "," + sliderPosY + ")");
 
         slider.append("line")
             .attr("class", "track")
@@ -552,19 +640,19 @@ var main = function () {
             .attr("class", "track-inset")
           .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
             .attr("class", "track-overlay")
-            .call(d3.drag()
-                .on("start.interrupt", function() { slider.interrupt(); })
-                .on("start drag", function() {
-                  currentValue = d3.event.x;
-                  x = xTimeScale(xTimeScale.invert(currentValue))
-                  currentDayId = daysString.indexOf(formatTime(xTimeScale.invert(currentValue)))
-                  console.log(currentDayId)
-                  handle.attr("cx", x)
-                  label
-                    .attr("x", x)
-                    .text(formatDate(xTimeScale.invert(currentValue)))
-                })
-            );
+            //.call(d3.drag()
+                //.on("start.interrupt", function() { slider.interrupt(); })
+                //.on("start drag", function() {
+                  //dragged = true
+                  //currentValue = d3.event.x
+                  //x = xTimeScale(xTimeScale.invert(currentValue))
+                  //initDayId = daysString.indexOf(formatTime(xTimeScale.invert(currentValue)))
+                  //handle.attr("cx", x)
+                  //label
+                    //.attr("x", x)
+                    //.text(formatDate(xTimeScale.invert(currentValue)))
+                //})
+            //);
 
         slider.insert("g", ".track-overlay")
             .attr("class", "ticks")
@@ -584,13 +672,158 @@ var main = function () {
 
         label = slider.append("text")  
             .attr("class", "label")
+            .attr("font-weight", "bold")
             .attr("text-anchor", "middle")
-            .text(formatDate(days[0]))
+            .text(formatTime(days[0]))
             .attr("transform", "translate(0," + (-25) + ")")
 
       }
-    } 
 
+      ///////////////////////////////////////////////////////////////////////////
+      ///////////////////////////////// Bar chart ///////////////////////////////
+      ///////////////////////////////////////////////////////////////////////////
+
+      function countriesBarChart(data) {
+
+        var countriesChart = sidebar_svg.append("g")
+            .attr("class","countries_barchart")
+
+        data = data.filter(d=>d.country != 'Germany')
+
+        var xScale = d3.scaleBand()
+          .domain(data.map(d=>d.country))
+          .range([0, sidebarChart_width])
+          .padding(0.1)  
+   
+        var yScale = d3.scaleLinear()
+          .domain([0, d3.max(data, d=>+d.metric)])
+          .range([150, 10])  
+
+        var rects = countriesChart.selectAll('g').data(data) 
+
+        const entered_rects = rects.enter().append('g')
+
+        entered_rects
+           .merge(rects)
+           .attr("transform", function(d) {
+              return (
+                "translate(" + xScale(d.country) + "," + yScale(+d.metric) + ")" 
+              );
+           })
+
+        rects.exit().remove()
+
+        entered_rects.append('rect')
+          .merge(rects.select("rect"))
+          .attr('class', 'bar')
+          .attr('id', function(d) { return "bar" + d.country })
+          .attr("fill", KIRON_COLOR)
+          .attr("width", xScale.bandwidth())
+          .attr("height", function(d) { return 150 - yScale(+d.metric) })
+
+        // add the text to the label group showing country name
+        entered_rects.append("text")
+          .merge(rects.select("text"))
+           .style("text-anchor", "middle")
+           .attr('class', 'rectLabel')
+           .attr('id', function(d) { return "rectLabel" + d.country })
+           .attr("dx", xScale.bandwidth()/2)
+           .attr("dy", -5)
+           .attr('font-size', '8px')
+           .attr('font-weight', 'bold')
+           .attr('fill', 'white')
+           .attr('opacity', 1)
+           .text(function(d) { return Math.round(+d.metric*10)/10 })
+            
+      }
+
+          ///////////////////////////////////////////////////////////////////////////
+          ///////////////////////////// Stacked bar chart ///////////////////////////
+          ///////////////////////////////////////////////////////////////////////////
+          function stackedBarChart(data, topCountries_list) {
+
+            var ednChart = sidebar_svg.append("g")
+              .attr("class","edn_barchart")
+              .attr("transform", "translate(0, 300)")
+
+            topCountries_list = topCountries_list.filter(d=>d != 'Germany')
+
+            var binLabels = ['TRUE', 'FALSE', 'UNKNOWN']
+
+            var yScale = d3.scaleBand()
+              .domain(topCountries_list)
+              .range([0, 20*topCountries_list.length])
+              .padding(0.2)
+
+            var xScale = d3.scaleLinear()
+              .domain([0, 100])
+              .range([0, sidebarChart_width])  
+
+            var colorScale = d3.scaleOrdinal()
+              .range(['#FABF4B', '#45ADA8', '#82C3ED'])
+              .domain(binLabels)
+
+            var dataByCountry = d3.nest()
+              .key(d=>d.country)
+              .sortKeys(function(a,b) { return topCountries_list.indexOf(a) - topCountries_list.indexOf(b); })
+              .entries(data)
+
+            var dataNew = []
+            dataByCountry.map((D,I) => {
+              var oneCountryBin = Array.from(Array(binLabels.length), () => 0)
+              D.values.map((d,i) => {
+                oneCountryBin[binLabels.indexOf(d.attended_university)] = +d.pct
+              })
+              dataNew.push(oneCountryBin)
+            })
+
+            // Constructs a stack layout based on data 
+            // d3's permute ensures each individual array is sorted in the same order. Important to ensure sort arrangement is aligned for all parameters before stack layout)
+            var stackedData = Object.assign(d3.stack().keys(d3.range(binLabels.length))(dataNew), {
+              keys: binLabels,
+              ids: binLabels.map(R => topCountries_list.map(P => `${R}_${P}`)),
+              countries: topCountries_list
+            })
+
+            stackedData.forEach((d,i) => {
+              stackedData.countries.forEach((D,I) => {
+                stackedData[i][I].key = stackedData.ids[i][I]
+                stackedData[i][I].color = colorScale(stackedData.keys[i]) 
+                stackedData[i][I].x = ( d[I][0] ? xScale(d[I][0]) : xScale(0) )
+                stackedData[i][I].y = yScale(D)
+                stackedData[i][I].width = ( d[I][1] ? xScale(d[I][1]) : xScale(0) ) - ( d[I][0] ? xScale(d[I][0]) : xScale(0) )
+                stackedData[i][I].height = yScale.bandwidth()
+              })
+            })
+            
+            var groups = ednChart.selectAll("rect").data(stackedData.flat(), d=>d.key)
+
+            groups.exit().remove()
+
+            var groupsEnter = groups.enter().append("rect")
+              .merge(groups)
+              .attr('class', d=>d.key)
+              .attr("fill", d=>d.color)
+              .attr("x", d => d.x)
+              .attr("width", d => d.width)
+              .attr("y", d => d.y)
+              .attr("height", d => d.height)
+
+            var text = ednChart.selectAll("text").data(topCountries_list, d=>d)
+
+            text.exit().remove()
+
+            var entered_text = text.enter().append("text")
+              .merge(text)
+              .attr("x", 10)
+              .attr('y', d=>yScale(d)+yScale.bandwidth()/2)
+              .attr('fill', 'black')
+              .attr('font-size', '12px')
+              .text(d=>d)
+
+          }
+
+    }
   }
 
   ///////////////////////////////////////////////////////////////////////////

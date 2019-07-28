@@ -3,17 +3,25 @@ body {
   margin: 0px;
   border: 0px;
   background-color: #D9D9D9;
-  font-family: 'Hind Madurai', sans-serif;
+  font-family: 'Hind Madurai', sans-serif !important;
   color: #113893;
 }
+
+body.pushable>.pusher {
+  background: #D9D9D9;
+}
 text {
-  font-family: 'Hind Madurai', sans-serif;
+  font-family: 'Hind Madurai', sans-serif !important;
+}
+h1 {
+  font-size: 2.1em;
 }
 #wrapper {
   width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
+  opacity: 0;
 }
 #container {
   display: flex;
@@ -25,6 +33,9 @@ text {
   position: relative;
   width: 100%;
   height: 100%;
+}
+#clock {
+  width: 300px;
 }
 
 .btn {
@@ -45,6 +56,13 @@ text {
 .btn:hover {
     background-color: transparent;
     color: #113893;
+}
+#showMore {
+  width: 100px;
+  margin-bottom: 5px;
+  margin-left: 0px;
+  font-weight:bold;
+  border-bottom: 2px solid #113893;
 }
 .controls {
   display: inline-block;
@@ -68,7 +86,7 @@ text {
   height: auto;
   fill: white; 
   opacity: 0.7;
-  font-size: 0.85em;
+  font-size: 1em;
 }
 .blurry { 
   position: absolute;
@@ -88,7 +106,7 @@ and (max-width : 1024px)
 and (orientation : portrait) { 
   .header {
     position: relative;
-    width: 500px;
+    width: 500px; 
     padding: 20px;
   }
   rect { 
@@ -100,6 +118,11 @@ and (orientation : portrait) {
   .description {
     display: none;
   }
+  .controls {
+    display: inline-block;
+    margin-left: 0px;
+    margin-top: 0px;
+  }
 }
 
 @media only screen 
@@ -110,7 +133,7 @@ and (orientation : landscape) {
     position: absolute;
     top: 0;
     left: 0px;
-    width: 10%;
+    width: 30%;
   }
 
   .description { 
@@ -123,6 +146,11 @@ and (orientation : landscape) {
     opacity: 0.7;
     font-size: 1em;
   }
+  .controls {
+    display: inline-block;
+    margin-left: 110px;
+    margin-top: 0px;
+  }
 }
 
 @media only screen 
@@ -132,7 +160,7 @@ and (orientation : landscape) {
   .description { 
     position: absolute;
     left: 0;
-    bottom: 8%;
+    bottom: 0%;
     width: 20%;
     height: auto;
     fill: white; 
@@ -140,26 +168,6 @@ and (orientation : landscape) {
     font-size: 0.8em;
   }
 }
-
-#play-button {
-  position: absolute;
-  top: 140px;
-  left: 50px;
-  background: #f08080;
-  padding-right: 26px;
-  border-radius: 3px;
-  border: none;
-  color: white;
-  margin: 0;
-  padding: 0 12px;
-  width: 60px;
-  cursor: pointer;
-  height: 30px;
-}
-
-#play-button:hover {
-  background-color: #696969;
-}    
 
 .ticks {
   font-size: 10px;
@@ -195,4 +203,27 @@ and (orientation : landscape) {
   stroke-opacity: 0.5;
   stroke-width: 1.25px;
   z-index: 999;
+}
+
+.ui.button {
+  background-color: transparent !important;
+  color: #113893 !important;
+  border: solid 2px #113893 !important;
+}
+
+i.icon.bars:before {
+  color: #113893 !important;
+}
+
+.ui.custom.sidebar {
+  width: 315px !important;
+  margin-left: -315px !important;
+}
+
+.ui.active.custom.sidebar {
+  margin-left: 0px !important;
+}
+
+.ui.active.right.custom.sidebar {
+  margin-left: -315px !important;
 }

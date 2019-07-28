@@ -6,9 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+  <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
   <link href="https://fonts.googleapis.com/css?family=Hind+Madurai&display=swap" rel="stylesheet">
-  <link href="./css/general.css" rel="stylesheet">
+  <link href="./vendor/css/sidebar.min.css" rel="stylesheet">
   <link href="./vendor/css/loader.min.css" rel="stylesheet">
+  <link href="./vendor/css/sidebar.min.css" rel="stylesheet">
+  <link href="./vendor/css/button.min.css" rel="stylesheet">
+  <link href="./vendor/css/icon.min.css" rel="stylesheet">
+  <link href="./css/general.css" rel="stylesheet">
+  <script src="./vendor/js/sidebar.min.js"></script>
   <script src="./vendor/js/d3.js"></script>
 </head>
 <body>
@@ -21,14 +30,22 @@
     </div>
   </div>
 
-  <div id="wrapper">
+  <div class="ui sidebar inverted vertical menu">
+    <svg>
+    </svg>
+  </div>
+
+  <div class='pusher' id="wrapper">
     <div id="container">
   
       <div id='group'>
         <div id="chart">
           <div class='header'>
-            <h1 style="margin-bottom:0px; padding:0px;font-weight: semi-bold;">KIRON'S STUDENTS</h1>
-
+            <h1 style="margin-bottom:0px; padding:0px;font-weight: semi-bold;">
+            <button class="ui mini basic icon button showMore" style="float:left; margin-top:5px; margin-right:10px;">
+              <i class="bars icon"></i>
+            </button>
+            KIRON'S STUDENTS</h1>
             <p class='header-description'>Refugees coming to <span style='font-weight:900'>Germany</span> are ambitious and are active. But they continue to have transition problems into the education system and the labour market.<span style='font-weight:900'> The main goal of Kiron is to provide free learning opportunities to refugees and asylum seekers, regardless of their education background, gender and age.</span> The non-profit organization has developed an online study program to enable smooth access to higher education and short programmes with a closer labour market focus.</p>
             <div id='clock'>
               <p style="margin:0px;">Refugee became a Kiron student on:</p>
@@ -38,14 +55,13 @@
                  class="btn"
                  id="play"
                  value="Play" />
-               </div>
-              <h2 style="margin-top:0px; padding-right:10px;display:inline-block"></h2>
+              </div>
             </div>
           </div>
           <svg>
           </svg>
         </div>
-        <p class='description'>Refugees coming to <span style='font-weight:900'>Germany</span> are ambitious and are active. But they continue to have transition problems into the education system and the labour market.<span style='font-weight:900'> The main goal of Kiron is to provide free learning opportunities to refugees and asylum seekers, regardless of their education background, gender and age.</span> The non-profit organization has developed an online study program to enable smooth access to higher education and short programmes with a closer labour market focus.</p>
+        <p class='description'>Refugees coming to <span style='font-weight:900'>Germany</span> are ambitious and are active. But they continue to have transition problems into the education system and the labour market.<span style='font-weight:900'> The main goal of Kiron is to provide free learning opportunities to refugees and asylum seekers, regardless of their education background, gender and age.</span> The non-profit organization has developed an online study program to enable smooth access to higher education and short programmes with a closer labour market focus.</p>   
       </div>
 
     </div>
@@ -71,6 +87,14 @@
 
   <script src="./js/map.js"></script>
   <script>
+
+    d3.select('.showMore').on('click', function(d) {
+      $('.ui.sidebar')
+        .sidebar('toggle')
+    })
+
+
+    setTimeout(function(d) { d3.select('#wrapper').style('opacity', 1) }, 500)
     d3.select('#dimmer').style('display', 'block')
     main.run()
   </script>
