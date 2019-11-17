@@ -1,0 +1,638 @@
+,Product Family,Product Name,month-year,diff
+0,Office Furniture,Cabinet,2017-10-01,56.0
+1,Office Furniture,Cabinet,2017-11-01,112.0
+2,Office Furniture,Cabinet,2017-12-01,144.0
+3,Office Furniture,Cabinet,2018-01-01,228.0
+4,Office Furniture,Cabinet,2018-02-01,248.0
+5,Office Furniture,Cabinet,2018-03-01,264.0
+6,Office Furniture,Cabinet,2018-04-01,316.0
+7,Office Furniture,Cabinet,2018-05-01,920.0
+8,Office Furniture,Cabinet,2018-06-01,980.0
+9,Office Furniture,Cabinet,2018-07-01,1044.0
+10,Office Furniture,Cabinet,2018-08-01,1084.0
+11,Office Furniture,Cabinet,2018-09-01,1116.0
+12,Office Furniture,Cabinet,2018-10-01,1128.0
+13,Office Furniture,Cabinet,2018-11-01,1152.0
+14,Office Furniture,Cabinet,2018-12-01,1176.0
+15,Office Furniture,Cabinet,2019-01-01,1192.0
+16,Office Furniture,Cabinet,2019-02-01,1192.0
+17,Office Furniture,Cabinet,2019-03-01,1232.0
+18,Office Furniture,Cabinet,2019-04-01,1280.0
+19,Office Furniture,Cabinet,2019-05-01,1332.0
+20,Office Furniture,Cabinet,2019-06-01,1376.0
+21,Office Furniture,Cabinet,2019-07-01,1416.0
+22,Office Furniture,Cabinet,2019-08-01,1460.0
+23,Office Furniture,Chair,2017-10-01,303.0092592592593
+24,Office Furniture,Chair,2017-11-01,545.4166666666667
+25,Office Furniture,Chair,2017-12-01,623.3333333333335
+26,Office Furniture,Chair,2018-01-01,683.9351851851853
+27,Office Furniture,Chair,2018-02-01,675.2777777777779
+28,Office Furniture,Chair,2018-03-01,580.0462962962963
+29,Office Furniture,Chair,2018-04-01,432.8703703703703
+30,Office Furniture,Chair,2018-05-01,1411.1574074074072
+31,Office Furniture,Chair,2018-06-01,1566.9907407407402
+32,Office Furniture,Chair,2018-07-01,1610.2777777777771
+33,Office Furniture,Chair,2018-08-01,1644.9074074074067
+34,Office Furniture,Chair,2018-09-01,1688.1944444444437
+35,Office Furniture,Chair,2018-10-01,1662.2222222222215
+36,Office Furniture,Chair,2018-11-01,1965.2314814814808
+37,Office Furniture,Chair,2018-12-01,1982.5462962962956
+38,Office Furniture,Chair,2019-01-01,1835.3703703703695
+39,Office Furniture,Chair,2019-02-01,1818.0555555555547
+40,Office Furniture,Chair,2019-03-01,1774.7685185185178
+41,Office Furniture,Chair,2019-04-01,1627.592592592592
+42,Office Furniture,Chair,2019-05-01,1809.3981481481474
+43,Office Furniture,Chair,2019-06-01,1921.9444444444437
+44,Office Furniture,Chair,2019-07-01,1714.166666666666
+45,Office Furniture,Chair,2019-08-01,1757.453703703703
+46,Office Furniture,Desk,2017-10-01,1300.0000000000023
+47,Office Furniture,Desk,2017-11-01,2925.0000000000064
+48,Office Furniture,Desk,2017-12-01,3055.000000000007
+49,Office Furniture,Desk,2018-01-01,3726.666666666675
+50,Office Furniture,Desk,2018-02-01,3791.666666666675
+51,Office Furniture,Desk,2018-03-01,4181.666666666676
+52,Office Furniture,Desk,2018-04-01,4961.666666666678
+53,Office Furniture,Desk,2018-05-01,6175.000000000015
+54,Office Furniture,Desk,2018-06-01,6868.33333333335
+55,Office Furniture,Desk,2018-07-01,7908.333333333354
+56,Office Furniture,Desk,2018-08-01,8926.66666666669
+57,Office Furniture,Desk,2018-09-01,9685.000000000025
+58,Office Furniture,Desk,2018-10-01,10226.666666666693
+59,Office Furniture,Desk,2018-11-01,10876.666666666695
+60,Office Furniture,Desk,2018-12-01,11613.333333333363
+61,Office Furniture,Desk,2019-01-01,11765.000000000031
+62,Office Furniture,Desk,2019-02-01,12090.000000000033
+63,Office Furniture,Desk,2019-03-01,12350.000000000033
+64,Office Furniture,Desk,2019-04-01,12913.333333333369
+65,Office Furniture,Desk,2019-05-01,13520.000000000036
+66,Office Furniture,Desk,2019-06-01,14430.000000000038
+67,Office Furniture,Desk,2019-07-01,15036.666666666706
+68,Office Furniture,Desk,2019-08-01,15470.00000000004
+0,Living Room,Cabinet,2017-10-01,855.0
+1,Living Room,Cabinet,2017-11-01,1732.5
+2,Living Room,Cabinet,2017-12-01,2205.0
+3,Living Room,Cabinet,2018-01-01,3015.0
+4,Living Room,Cabinet,2018-02-01,3510.0
+5,Living Room,Cabinet,2018-03-01,4162.5
+6,Living Room,Cabinet,2018-04-01,4995.0
+7,Living Room,Cabinet,2018-05-01,6052.5
+8,Living Room,Cabinet,2018-06-01,7290.0
+9,Living Room,Cabinet,2018-07-01,8595.0
+10,Living Room,Cabinet,2018-08-01,9315.0
+11,Living Room,Cabinet,2018-09-01,9990.0
+12,Living Room,Cabinet,2018-10-01,10507.5
+13,Living Room,Cabinet,2018-11-01,11160.0
+14,Living Room,Cabinet,2018-12-01,11430.0
+15,Living Room,Cabinet,2019-01-01,11857.5
+16,Living Room,Cabinet,2019-02-01,12375.0
+17,Living Room,Cabinet,2019-03-01,12420.0
+18,Living Room,Cabinet,2019-04-01,12982.5
+19,Living Room,Cabinet,2019-05-01,13815.0
+20,Living Room,Cabinet,2019-06-01,14602.5
+21,Living Room,Cabinet,2019-07-01,15232.5
+22,Living Room,Cabinet,2019-08-01,15660.0
+23,Living Room,Rug,2017-10-01,0.0
+24,Living Room,Rug,2017-11-01,0.0
+25,Living Room,Rug,2017-12-01,0.0
+26,Living Room,Rug,2018-01-01,0.0
+27,Living Room,Rug,2018-02-01,0.0
+28,Living Room,Rug,2018-03-01,0.0
+29,Living Room,Rug,2018-04-01,0.0
+30,Living Room,Rug,2018-05-01,0.0
+31,Living Room,Rug,2018-06-01,0.0
+32,Living Room,Rug,2018-07-01,0.0
+33,Living Room,Rug,2018-08-01,0.0
+34,Living Room,Rug,2018-09-01,0.0
+35,Living Room,Rug,2018-10-01,0.0
+36,Living Room,Rug,2018-11-01,0.0
+37,Living Room,Rug,2018-12-01,0.0
+38,Living Room,Rug,2019-01-01,0.0
+39,Living Room,Rug,2019-02-01,0.0
+40,Living Room,Rug,2019-03-01,0.0
+41,Living Room,Rug,2019-04-01,0.0
+42,Living Room,Rug,2019-05-01,0.0
+43,Living Room,Rug,2019-06-01,0.0
+44,Living Room,Rug,2019-07-01,0.0
+45,Living Room,Rug,2019-08-01,0.0
+46,Living Room,Shelf,2017-10-01,717.6388888888881
+47,Living Room,Shelf,2017-11-01,1443.935185185183
+48,Living Room,Shelf,2017-12-01,1338.796296296294
+49,Living Room,Shelf,2018-01-01,1889.444444444441
+50,Living Room,Shelf,2018-02-01,1727.5925925925897
+51,Living Room,Shelf,2018-03-01,1819.5833333333303
+52,Living Room,Shelf,2018-04-01,2450.3703703703654
+53,Living Room,Shelf,2018-05-01,3047.1759259259197
+54,Living Room,Shelf,2018-06-01,3903.749999999991
+55,Living Room,Shelf,2018-07-01,6353.935185185177
+56,Living Room,Shelf,2018-08-01,7003.935185185176
+57,Living Room,Shelf,2018-09-01,7516.759259259249
+58,Living Room,Shelf,2018-10-01,8145.648148148137
+59,Living Room,Shelf,2018-11-01,8558.796296296285
+60,Living Room,Shelf,2018-12-01,8748.379629629617
+61,Living Room,Shelf,2019-01-01,8908.148148148135
+62,Living Room,Shelf,2019-02-01,9014.07407407406
+63,Living Room,Shelf,2019-03-01,9105.277777777763
+64,Living Room,Shelf,2019-04-01,9284.444444444429
+65,Living Room,Shelf,2019-05-01,9547.129629629613
+66,Living Room,Shelf,2019-06-01,10216.52777777776
+67,Living Room,Shelf,2019-07-01,10574.398148148128
+68,Living Room,Shelf,2019-08-01,10947.314814814792
+69,Living Room,Small Chair,2017-10-01,988.125
+70,Living Room,Small Chair,2017-11-01,2073.90625
+71,Living Room,Small Chair,2017-12-01,2195.3125
+72,Living Room,Small Chair,2018-01-01,2529.53125
+73,Living Room,Small Chair,2018-02-01,3493.90625
+74,Living Room,Small Chair,2018-03-01,4158.4375
+75,Living Room,Small Chair,2018-04-01,4254.21875
+76,Living Room,Small Chair,2018-05-01,4974.375
+77,Living Room,Small Chair,2018-06-01,4947.8125
+78,Living Room,Small Chair,2018-07-01,5260.78125
+79,Living Room,Small Chair,2018-08-01,5823.28125
+80,Living Room,Small Chair,2018-09-01,5903.59375
+81,Living Room,Small Chair,2018-10-01,6282.8125
+82,Living Room,Small Chair,2018-11-01,6713.28125
+83,Living Room,Small Chair,2018-12-01,7067.8125
+84,Living Room,Small Chair,2019-01-01,6874.375
+85,Living Room,Small Chair,2019-02-01,6995.3125
+86,Living Room,Small Chair,2019-03-01,6741.40625
+87,Living Room,Small Chair,2019-04-01,6720.625
+88,Living Room,Small Chair,2019-05-01,6715.3125
+89,Living Room,Small Chair,2019-06-01,7039.84375
+90,Living Room,Small Chair,2019-07-01,7068.90625
+91,Living Room,Small Chair,2019-08-01,7027.8125
+92,Living Room,Sofa,2017-10-01,6199.999999999998
+93,Living Room,Sofa,2017-11-01,12666.666666666659
+94,Living Room,Sofa,2017-12-01,13916.666666666657
+95,Living Room,Sofa,2018-01-01,17899.999999999985
+96,Living Room,Sofa,2018-02-01,19266.66666666665
+97,Living Room,Sofa,2018-03-01,21949.999999999978
+98,Living Room,Sofa,2018-04-01,25683.333333333307
+99,Living Room,Sofa,2018-05-01,31783.333333333307
+100,Living Room,Sofa,2018-06-01,36299.99999999997
+101,Living Room,Sofa,2018-07-01,41916.666666666635
+102,Living Room,Sofa,2018-08-01,45283.3333333333
+103,Living Room,Sofa,2018-09-01,47599.99999999996
+104,Living Room,Sofa,2018-10-01,49966.66666666663
+105,Living Room,Sofa,2018-11-01,52649.999999999956
+106,Living Room,Sofa,2018-12-01,55233.333333333285
+107,Living Room,Sofa,2019-01-01,56483.333333333285
+108,Living Room,Sofa,2019-02-01,57883.333333333285
+109,Living Room,Sofa,2019-03-01,59366.66666666661
+110,Living Room,Sofa,2019-04-01,61366.666666666606
+111,Living Room,Sofa,2019-05-01,64249.999999999935
+112,Living Room,Sofa,2019-06-01,68416.6666666666
+113,Living Room,Sofa,2019-07-01,69566.6666666666
+114,Living Room,Sofa,2019-08-01,70066.6666666666
+115,Living Room,Table,2017-10-01,1178.666666666666
+116,Living Room,Table,2017-11-01,2514.499999999999
+117,Living Room,Table,2017-12-01,2510.666666666666
+118,Living Room,Table,2018-01-01,2938.666666666666
+119,Living Room,Table,2018-02-01,2794.0
+120,Living Room,Table,2018-03-01,3088.166666666667
+121,Living Room,Table,2018-04-01,3682.000000000001
+122,Living Room,Table,2018-05-01,4839.0
+123,Living Room,Table,2018-06-01,5772.333333333333
+124,Living Room,Table,2018-07-01,6490.333333333334
+125,Living Room,Table,2018-08-01,6994.166666666668
+126,Living Room,Table,2018-09-01,7168.333333333334
+127,Living Room,Table,2018-10-01,7510.166666666667
+128,Living Room,Table,2018-11-01,7927.666666666666
+129,Living Room,Table,2018-12-01,8057.666666666666
+130,Living Room,Table,2019-01-01,8122.5
+131,Living Room,Table,2019-02-01,8400.5
+132,Living Room,Table,2019-03-01,8441.5
+133,Living Room,Table,2019-04-01,8351.166666666668
+134,Living Room,Table,2019-05-01,8753.833333333334
+135,Living Room,Table,2019-06-01,9267.333333333334
+136,Living Room,Table,2019-07-01,9422.166666666666
+137,Living Room,Table,2019-08-01,9621.0
+138,Living Room,Upholstered Chair,2017-10-01,3295.3333333333335
+139,Living Room,Upholstered Chair,2017-11-01,5819.666666666668
+140,Living Room,Upholstered Chair,2017-12-01,6281.666666666669
+141,Living Room,Upholstered Chair,2018-01-01,7329.333333333336
+142,Living Room,Upholstered Chair,2018-02-01,7392.000000000003
+143,Living Room,Upholstered Chair,2018-03-01,8631.333333333336
+144,Living Room,Upholstered Chair,2018-04-01,10196.000000000002
+145,Living Room,Upholstered Chair,2018-05-01,12836.666666666668
+146,Living Room,Upholstered Chair,2018-06-01,14704.833333333334
+147,Living Room,Upholstered Chair,2018-07-01,16901.0
+148,Living Room,Upholstered Chair,2018-08-01,18430.5
+149,Living Room,Upholstered Chair,2018-09-01,18909.0
+150,Living Room,Upholstered Chair,2018-10-01,20046.666666666664
+151,Living Room,Upholstered Chair,2018-11-01,21294.333333333332
+152,Living Room,Upholstered Chair,2018-12-01,22141.666666666664
+153,Living Room,Upholstered Chair,2019-01-01,23134.499999999996
+154,Living Room,Upholstered Chair,2019-02-01,23779.499999999996
+155,Living Room,Upholstered Chair,2019-03-01,24011.999999999996
+156,Living Room,Upholstered Chair,2019-04-01,25292.499999999996
+157,Living Room,Upholstered Chair,2019-05-01,26567.166666666664
+158,Living Room,Upholstered Chair,2019-06-01,27804.666666666664
+159,Living Room,Upholstered Chair,2019-07-01,29313.499999999996
+160,Living Room,Upholstered Chair,2019-08-01,28984.166666666664
+161,Living Room,Wall Unit,2017-10-01,490.5
+162,Living Room,Wall Unit,2017-11-01,1030.5
+163,Living Room,Wall Unit,2017-12-01,1302.0
+164,Living Room,Wall Unit,2018-01-01,1593.75
+165,Living Room,Wall Unit,2018-02-01,1704.0
+166,Living Room,Wall Unit,2018-03-01,1653.75
+167,Living Room,Wall Unit,2018-04-01,1794.0
+168,Living Room,Wall Unit,2018-05-01,2588.25
+169,Living Room,Wall Unit,2018-06-01,2949.0
+170,Living Room,Wall Unit,2018-07-01,3130.5
+171,Living Room,Wall Unit,2018-08-01,3521.25
+172,Living Room,Wall Unit,2018-09-01,3811.5
+173,Living Room,Wall Unit,2018-10-01,3982.5
+174,Living Room,Wall Unit,2018-11-01,4052.25
+175,Living Room,Wall Unit,2018-12-01,4122.0
+176,Living Room,Wall Unit,2019-01-01,4221.75
+177,Living Room,Wall Unit,2019-02-01,4311.75
+178,Living Room,Wall Unit,2019-03-01,4431.75
+179,Living Room,Wall Unit,2019-04-01,4551.75
+180,Living Room,Wall Unit,2019-05-01,4711.5
+181,Living Room,Wall Unit,2019-06-01,4821.75
+182,Living Room,Wall Unit,2019-07-01,5012.25
+183,Living Room,Wall Unit,2019-08-01,5403.0
+0,Housewares & Linens,Housewares & Linens,2017-10-01,2814.3194444444443
+1,Housewares & Linens,Housewares & Linens,2017-11-01,7112.472222222222
+2,Housewares & Linens,Housewares & Linens,2017-12-01,10383.458333333332
+3,Housewares & Linens,Housewares & Linens,2018-01-01,12623.694444444443
+4,Housewares & Linens,Housewares & Linens,2018-02-01,13655.374999999998
+5,Housewares & Linens,Housewares & Linens,2018-03-01,15142.708333333332
+6,Housewares & Linens,Housewares & Linens,2018-04-01,18269.041666666664
+7,Housewares & Linens,Housewares & Linens,2018-05-01,19871.263888888887
+8,Housewares & Linens,Housewares & Linens,2018-06-01,22538.624999999996
+9,Housewares & Linens,Housewares & Linens,2018-07-01,26096.152777777774
+10,Housewares & Linens,Housewares & Linens,2018-08-01,28406.20833333333
+11,Housewares & Linens,Housewares & Linens,2018-09-01,30398.72222222222
+12,Housewares & Linens,Housewares & Linens,2018-10-01,32966.58333333333
+13,Housewares & Linens,Housewares & Linens,2018-11-01,34961.666666666664
+14,Housewares & Linens,Housewares & Linens,2018-12-01,37537.63888888888
+15,Housewares & Linens,Housewares & Linens,2019-01-01,38831.99999999999
+16,Housewares & Linens,Housewares & Linens,2019-02-01,41174.62499999999
+17,Housewares & Linens,Housewares & Linens,2019-03-01,43372.87499999999
+18,Housewares & Linens,Housewares & Linens,2019-04-01,46046.95833333333
+19,Housewares & Linens,Housewares & Linens,2019-05-01,48631.87499999999
+20,Housewares & Linens,Housewares & Linens,2019-06-01,51306.01388888888
+21,Housewares & Linens,Housewares & Linens,2019-07-01,54545.51388888888
+22,Housewares & Linens,Housewares & Linens,2019-08-01,57475.97222222222
+0,Electronics/Appliances,Computer,2017-10-01,0.277777777777778
+1,Electronics/Appliances,Computer,2017-11-01,1.944444444444446
+2,Electronics/Appliances,Computer,2017-12-01,1.6666666666666679
+3,Electronics/Appliances,Computer,2018-01-01,3.6111111111111143
+4,Electronics/Appliances,Computer,2018-02-01,2.7777777777777803
+5,Electronics/Appliances,Computer,2018-03-01,4.1666666666666705
+6,Electronics/Appliances,Computer,2018-04-01,5.277777777777782
+7,Electronics/Appliances,Computer,2018-05-01,8.33333333333334
+8,Electronics/Appliances,Computer,2018-06-01,8.33333333333334
+9,Electronics/Appliances,Computer,2018-07-01,9.444444444444452
+10,Electronics/Appliances,Computer,2018-08-01,9.166666666666673
+11,Electronics/Appliances,Computer,2018-09-01,9.166666666666673
+12,Electronics/Appliances,Computer,2018-10-01,9.444444444444452
+13,Electronics/Appliances,Computer,2018-11-01,8.888888888888896
+14,Electronics/Appliances,Computer,2018-12-01,9.444444444444452
+15,Electronics/Appliances,Computer,2019-01-01,9.444444444444452
+16,Electronics/Appliances,Computer,2019-02-01,10.000000000000007
+17,Electronics/Appliances,Computer,2019-03-01,9.166666666666673
+18,Electronics/Appliances,Computer,2019-04-01,8.611111111111118
+19,Electronics/Appliances,Computer,2019-05-01,8.888888888888896
+20,Electronics/Appliances,Computer,2019-06-01,8.611111111111118
+21,Electronics/Appliances,Computer,2019-07-01,9.166666666666673
+22,Electronics/Appliances,Computer,2019-08-01,8.888888888888895
+23,Electronics/Appliances,Other,2017-10-01,17.388888888888903
+24,Electronics/Appliances,Other,2017-11-01,43.77777777777781
+25,Electronics/Appliances,Other,2017-12-01,44.62500000000003
+26,Electronics/Appliances,Other,2018-01-01,52.44444444444448
+27,Electronics/Appliances,Other,2018-02-01,54.61111111111114
+28,Electronics/Appliances,Other,2018-03-01,62.25000000000004
+29,Electronics/Appliances,Other,2018-04-01,66.36111111111116
+30,Electronics/Appliances,Other,2018-05-01,81.33333333333339
+31,Electronics/Appliances,Other,2018-06-01,93.73611111111117
+32,Electronics/Appliances,Other,2018-07-01,115.58333333333341
+33,Electronics/Appliances,Other,2018-08-01,133.93055555555566
+34,Electronics/Appliances,Other,2018-09-01,132.013888888889
+35,Electronics/Appliances,Other,2018-10-01,145.68055555555566
+36,Electronics/Appliances,Other,2018-11-01,154.388888888889
+37,Electronics/Appliances,Other,2018-12-01,157.013888888889
+38,Electronics/Appliances,Other,2019-01-01,170.40277777777789
+39,Electronics/Appliances,Other,2019-02-01,186.16666666666677
+40,Electronics/Appliances,Other,2019-03-01,192.54166666666677
+41,Electronics/Appliances,Other,2019-04-01,197.05555555555566
+42,Electronics/Appliances,Other,2019-05-01,227.94444444444457
+43,Electronics/Appliances,Other,2019-06-01,233.6666666666668
+44,Electronics/Appliances,Other,2019-07-01,250.0277777777779
+45,Electronics/Appliances,Other,2019-08-01,259.65277777777794
+46,Electronics/Appliances,Television,2017-10-01,159.7939814814814
+47,Electronics/Appliances,Television,2017-11-01,280.00694444444434
+48,Electronics/Appliances,Television,2017-12-01,332.8842592592591
+49,Electronics/Appliances,Television,2018-01-01,390.7592592592591
+50,Electronics/Appliances,Television,2018-02-01,399.48148148148135
+51,Electronics/Appliances,Television,2018-03-01,452.1226851851851
+52,Electronics/Appliances,Television,2018-04-01,478.46527777777766
+53,Electronics/Appliances,Television,2018-05-01,567.0879629629628
+54,Electronics/Appliances,Television,2018-06-01,622.0393518518517
+55,Electronics/Appliances,Television,2018-07-01,727.4328703703702
+56,Electronics/Appliances,Television,2018-08-01,783.548611111111
+57,Electronics/Appliances,Television,2018-09-01,903.5740740740739
+58,Electronics/Appliances,Television,2018-10-01,944.8032407407405
+59,Electronics/Appliances,Television,2018-11-01,1041.4120370370367
+60,Electronics/Appliances,Television,2018-12-01,1061.296296296296
+61,Electronics/Appliances,Television,2019-01-01,1077.1527777777776
+62,Electronics/Appliances,Television,2019-02-01,1121.4953703703702
+63,Electronics/Appliances,Television,2019-03-01,1168.3379629629628
+64,Electronics/Appliances,Television,2019-04-01,1212.5555555555554
+65,Electronics/Appliances,Television,2019-05-01,1361.247685185185
+66,Electronics/Appliances,Television,2019-06-01,1437.4861111111109
+67,Electronics/Appliances,Television,2019-07-01,1463.4027777777776
+68,Electronics/Appliances,Television,2019-08-01,1497.9861111111109
+0,Dining / Kitchen Furniture,Chair,2017-10-01,4493.923611111112
+1,Dining / Kitchen Furniture,Chair,2017-11-01,7716.406250000002
+2,Dining / Kitchen Furniture,Chair,2017-12-01,8132.1180555555575
+3,Dining / Kitchen Furniture,Chair,2018-01-01,10570.486111111115
+4,Dining / Kitchen Furniture,Chair,2018-02-01,9695.833333333336
+5,Dining / Kitchen Furniture,Chair,2018-03-01,10946.093750000004
+6,Dining / Kitchen Furniture,Chair,2018-04-01,11767.881944444449
+7,Dining / Kitchen Furniture,Chair,2018-05-01,14704.77430555556
+8,Dining / Kitchen Furniture,Chair,2018-06-01,15835.069444444449
+9,Dining / Kitchen Furniture,Chair,2018-07-01,18072.91666666667
+10,Dining / Kitchen Furniture,Chair,2018-08-01,19312.326388888894
+11,Dining / Kitchen Furniture,Chair,2018-09-01,20348.263888888894
+12,Dining / Kitchen Furniture,Chair,2018-10-01,21302.951388888894
+13,Dining / Kitchen Furniture,Chair,2018-11-01,22287.41319444445
+14,Dining / Kitchen Furniture,Chair,2018-12-01,22452.343750000004
+15,Dining / Kitchen Furniture,Chair,2019-01-01,23407.89930555556
+16,Dining / Kitchen Furniture,Chair,2019-02-01,24332.29166666667
+17,Dining / Kitchen Furniture,Chair,2019-03-01,24130.034722222226
+18,Dining / Kitchen Furniture,Chair,2019-04-01,24800.173611111117
+19,Dining / Kitchen Furniture,Chair,2019-05-01,25623.00347222223
+20,Dining / Kitchen Furniture,Chair,2019-06-01,26914.756944444453
+21,Dining / Kitchen Furniture,Chair,2019-07-01,27372.30902777779
+22,Dining / Kitchen Furniture,Chair,2019-08-01,27912.15277777779
+23,Dining / Kitchen Furniture,Shelf,2017-10-01,466.7499999999996
+24,Dining / Kitchen Furniture,Shelf,2017-11-01,787.1666666666661
+25,Dining / Kitchen Furniture,Shelf,2017-12-01,950.7499999999992
+26,Dining / Kitchen Furniture,Shelf,2018-01-01,1476.8333333333317
+27,Dining / Kitchen Furniture,Shelf,2018-02-01,1721.5833333333312
+28,Dining / Kitchen Furniture,Shelf,2018-03-01,1920.9166666666642
+29,Dining / Kitchen Furniture,Shelf,2018-04-01,2164.0833333333303
+30,Dining / Kitchen Furniture,Shelf,2018-05-01,2602.166666666663
+31,Dining / Kitchen Furniture,Shelf,2018-06-01,2981.249999999996
+32,Dining / Kitchen Furniture,Shelf,2018-07-01,3145.333333333329
+33,Dining / Kitchen Furniture,Shelf,2018-08-01,3405.249999999995
+34,Dining / Kitchen Furniture,Shelf,2018-09-01,3608.333333333328
+35,Dining / Kitchen Furniture,Shelf,2018-10-01,3835.416666666661
+36,Dining / Kitchen Furniture,Shelf,2018-11-01,3912.999999999994
+37,Dining / Kitchen Furniture,Shelf,2018-12-01,4220.249999999994
+38,Dining / Kitchen Furniture,Shelf,2019-01-01,4436.41666666666
+39,Dining / Kitchen Furniture,Shelf,2019-02-01,4575.999999999993
+40,Dining / Kitchen Furniture,Shelf,2019-03-01,4810.999999999993
+41,Dining / Kitchen Furniture,Shelf,2019-04-01,4992.749999999993
+42,Dining / Kitchen Furniture,Shelf,2019-05-01,5101.583333333326
+43,Dining / Kitchen Furniture,Shelf,2019-06-01,5326.083333333326
+44,Dining / Kitchen Furniture,Shelf,2019-07-01,5407.249999999993
+45,Dining / Kitchen Furniture,Shelf,2019-08-01,5564.999999999993
+46,Dining / Kitchen Furniture,Sideboard,2017-10-01,850.0
+47,Dining / Kitchen Furniture,Sideboard,2017-11-01,2050.0
+48,Dining / Kitchen Furniture,Sideboard,2017-12-01,1950.0
+49,Dining / Kitchen Furniture,Sideboard,2018-01-01,2000.0
+50,Dining / Kitchen Furniture,Sideboard,2018-02-01,1700.0
+51,Dining / Kitchen Furniture,Sideboard,2018-03-01,2000.0
+52,Dining / Kitchen Furniture,Sideboard,2018-04-01,2450.0
+53,Dining / Kitchen Furniture,Sideboard,2018-05-01,3700.0
+54,Dining / Kitchen Furniture,Sideboard,2018-06-01,4000.0
+55,Dining / Kitchen Furniture,Sideboard,2018-07-01,4650.0
+56,Dining / Kitchen Furniture,Sideboard,2018-08-01,5500.0
+57,Dining / Kitchen Furniture,Sideboard,2018-09-01,5800.0
+58,Dining / Kitchen Furniture,Sideboard,2018-10-01,6300.0
+59,Dining / Kitchen Furniture,Sideboard,2018-11-01,6550.0
+60,Dining / Kitchen Furniture,Sideboard,2018-12-01,6650.0
+61,Dining / Kitchen Furniture,Sideboard,2019-01-01,6800.0
+62,Dining / Kitchen Furniture,Sideboard,2019-02-01,7150.0
+63,Dining / Kitchen Furniture,Sideboard,2019-03-01,7100.0
+64,Dining / Kitchen Furniture,Sideboard,2019-04-01,7150.0
+65,Dining / Kitchen Furniture,Sideboard,2019-05-01,8200.0
+66,Dining / Kitchen Furniture,Sideboard,2019-06-01,8900.0
+67,Dining / Kitchen Furniture,Sideboard,2019-07-01,9450.0
+68,Dining / Kitchen Furniture,Sideboard,2019-08-01,9450.0
+69,Dining / Kitchen Furniture,Table,2017-10-01,4933.333333333323
+70,Dining / Kitchen Furniture,Table,2017-11-01,8088.888888888871
+71,Dining / Kitchen Furniture,Table,2017-12-01,8666.666666666648
+72,Dining / Kitchen Furniture,Table,2018-01-01,11333.333333333308
+73,Dining / Kitchen Furniture,Table,2018-02-01,10711.111111111088
+74,Dining / Kitchen Furniture,Table,2018-03-01,12088.888888888863
+75,Dining / Kitchen Furniture,Table,2018-04-01,13333.333333333305
+76,Dining / Kitchen Furniture,Table,2018-05-01,16622.222222222186
+77,Dining / Kitchen Furniture,Table,2018-06-01,20311.11111111107
+78,Dining / Kitchen Furniture,Table,2018-07-01,23422.222222222175
+79,Dining / Kitchen Furniture,Table,2018-08-01,24222.222222222175
+80,Dining / Kitchen Furniture,Table,2018-09-01,25155.555555555507
+81,Dining / Kitchen Furniture,Table,2018-10-01,25866.666666666617
+82,Dining / Kitchen Furniture,Table,2018-11-01,27377.777777777726
+83,Dining / Kitchen Furniture,Table,2018-12-01,28177.777777777726
+84,Dining / Kitchen Furniture,Table,2019-01-01,29244.44444444439
+85,Dining / Kitchen Furniture,Table,2019-02-01,29822.222222222168
+86,Dining / Kitchen Furniture,Table,2019-03-01,29866.666666666613
+87,Dining / Kitchen Furniture,Table,2019-04-01,30266.666666666613
+88,Dining / Kitchen Furniture,Table,2019-05-01,32355.5555555555
+89,Dining / Kitchen Furniture,Table,2019-06-01,33644.44444444439
+90,Dining / Kitchen Furniture,Table,2019-07-01,34755.5555555555
+91,Dining / Kitchen Furniture,Table,2019-08-01,34711.11111111105
+0,Bedroom Furniture,Double Bed,2017-10-01,140.625
+1,Bedroom Furniture,Double Bed,2017-11-01,386.71875
+2,Bedroom Furniture,Double Bed,2017-12-01,189.84375
+3,Bedroom Furniture,Double Bed,2018-01-01,316.40625
+4,Bedroom Furniture,Double Bed,2018-02-01,330.46875
+5,Bedroom Furniture,Double Bed,2018-03-01,-35.15625
+6,Bedroom Furniture,Double Bed,2018-04-01,14.0625
+7,Bedroom Furniture,Double Bed,2018-05-01,956.25
+8,Bedroom Furniture,Double Bed,2018-06-01,1328.90625
+9,Bedroom Furniture,Double Bed,2018-07-01,1926.5625
+10,Bedroom Furniture,Double Bed,2018-08-01,2510.15625
+11,Bedroom Furniture,Double Bed,2018-09-01,2791.40625
+12,Bedroom Furniture,Double Bed,2018-10-01,2819.53125
+13,Bedroom Furniture,Double Bed,2018-11-01,2988.28125
+14,Bedroom Furniture,Double Bed,2018-12-01,3178.125
+15,Bedroom Furniture,Double Bed,2019-01-01,2917.96875
+16,Bedroom Furniture,Double Bed,2019-02-01,3403.125
+17,Bedroom Furniture,Double Bed,2019-03-01,3585.9375
+18,Bedroom Furniture,Double Bed,2019-04-01,3649.21875
+19,Bedroom Furniture,Double Bed,2019-05-01,3803.90625
+20,Bedroom Furniture,Double Bed,2019-06-01,3663.28125
+21,Bedroom Furniture,Double Bed,2019-07-01,2896.875
+22,Bedroom Furniture,Double Bed,2019-08-01,2784.375
+23,Bedroom Furniture,Dresser/Drawer,2017-10-01,3068.75
+24,Bedroom Furniture,Dresser/Drawer,2017-11-01,6425.5
+25,Bedroom Furniture,Dresser/Drawer,2017-12-01,6320.5
+26,Bedroom Furniture,Dresser/Drawer,2018-01-01,7227.25
+27,Bedroom Furniture,Dresser/Drawer,2018-02-01,6952.5
+28,Bedroom Furniture,Dresser/Drawer,2018-03-01,7822.25
+29,Bedroom Furniture,Dresser/Drawer,2018-04-01,8889.0
+30,Bedroom Furniture,Dresser/Drawer,2018-05-01,11170.25
+31,Bedroom Furniture,Dresser/Drawer,2018-06-01,11327.0
+32,Bedroom Furniture,Dresser/Drawer,2018-07-01,12480.5
+33,Bedroom Furniture,Dresser/Drawer,2018-08-01,13151.25
+34,Bedroom Furniture,Dresser/Drawer,2018-09-01,13803.25
+35,Bedroom Furniture,Dresser/Drawer,2018-10-01,14300.25
+36,Bedroom Furniture,Dresser/Drawer,2018-11-01,14819.75
+37,Bedroom Furniture,Dresser/Drawer,2018-12-01,14968.0
+38,Bedroom Furniture,Dresser/Drawer,2019-01-01,15106.0
+39,Bedroom Furniture,Dresser/Drawer,2019-02-01,15543.5
+40,Bedroom Furniture,Dresser/Drawer,2019-03-01,15974.75
+41,Bedroom Furniture,Dresser/Drawer,2019-04-01,16003.0
+42,Bedroom Furniture,Dresser/Drawer,2019-05-01,16145.75
+43,Bedroom Furniture,Dresser/Drawer,2019-06-01,16502.0
+44,Bedroom Furniture,Dresser/Drawer,2019-07-01,16145.75
+45,Bedroom Furniture,Dresser/Drawer,2019-08-01,15419.25
+46,Bedroom Furniture,Mirror,2017-10-01,29.333333333333357
+47,Bedroom Furniture,Mirror,2017-11-01,45.33333333333338
+48,Bedroom Furniture,Mirror,2017-12-01,49.33333333333337
+49,Bedroom Furniture,Mirror,2018-01-01,50.00000000000003
+50,Bedroom Furniture,Mirror,2018-02-01,38.00000000000001
+51,Bedroom Furniture,Mirror,2018-03-01,45.333333333333336
+52,Bedroom Furniture,Mirror,2018-04-01,30.666666666666647
+53,Bedroom Furniture,Mirror,2018-05-01,47.3333333333333
+54,Bedroom Furniture,Mirror,2018-06-01,45.33333333333329
+55,Bedroom Furniture,Mirror,2018-07-01,183.99999999999977
+56,Bedroom Furniture,Mirror,2018-08-01,189.99999999999977
+57,Bedroom Furniture,Mirror,2018-09-01,197.99999999999977
+58,Bedroom Furniture,Mirror,2018-10-01,196.66666666666643
+59,Bedroom Furniture,Mirror,2018-11-01,197.99999999999974
+60,Bedroom Furniture,Mirror,2018-12-01,191.99999999999974
+61,Bedroom Furniture,Mirror,2019-01-01,183.33333333333306
+62,Bedroom Furniture,Mirror,2019-02-01,189.99999999999972
+63,Bedroom Furniture,Mirror,2019-03-01,182.66666666666637
+64,Bedroom Furniture,Mirror,2019-04-01,177.9999999999997
+65,Bedroom Furniture,Mirror,2019-05-01,172.66666666666634
+66,Bedroom Furniture,Mirror,2019-06-01,178.66666666666634
+67,Bedroom Furniture,Mirror,2019-07-01,168.66666666666632
+68,Bedroom Furniture,Mirror,2019-08-01,170.66666666666632
+69,Bedroom Furniture,Other Bed,2017-10-01,806.6666666666661
+70,Bedroom Furniture,Other Bed,2017-11-01,2365.468749999998
+71,Bedroom Furniture,Other Bed,2017-12-01,2408.541666666665
+72,Bedroom Furniture,Other Bed,2018-01-01,3335.208333333331
+73,Bedroom Furniture,Other Bed,2018-02-01,3318.5416666666647
+74,Bedroom Furniture,Other Bed,2018-03-01,3225.208333333331
+75,Bedroom Furniture,Other Bed,2018-04-01,3561.8749999999977
+76,Bedroom Furniture,Other Bed,2018-05-01,4488.541666666663
+77,Bedroom Furniture,Other Bed,2018-06-01,4755.20833333333
+78,Bedroom Furniture,Other Bed,2018-07-01,5285.20833333333
+79,Bedroom Furniture,Other Bed,2018-08-01,5665.20833333333
+80,Bedroom Furniture,Other Bed,2018-09-01,6265.208333333329
+81,Bedroom Furniture,Other Bed,2018-10-01,7815.208333333327
+82,Bedroom Furniture,Other Bed,2018-11-01,8508.541666666659
+83,Bedroom Furniture,Other Bed,2018-12-01,8985.208333333325
+84,Bedroom Furniture,Other Bed,2019-01-01,9705.208333333325
+85,Bedroom Furniture,Other Bed,2019-02-01,10915.208333333323
+86,Bedroom Furniture,Other Bed,2019-03-01,11851.874999999989
+87,Bedroom Furniture,Other Bed,2019-04-01,12565.208333333321
+88,Bedroom Furniture,Other Bed,2019-05-01,13328.541666666653
+89,Bedroom Furniture,Other Bed,2019-06-01,13601.874999999987
+90,Bedroom Furniture,Other Bed,2019-07-01,14005.20833333332
+91,Bedroom Furniture,Other Bed,2019-08-01,14488.541666666652
+92,Bedroom Furniture,Queen Bed,2017-10-01,1199.9999999999984
+93,Bedroom Furniture,Queen Bed,2017-11-01,2833.3333333333303
+94,Bedroom Furniture,Queen Bed,2017-12-01,2666.6666666666642
+95,Bedroom Furniture,Queen Bed,2018-01-01,1666.6666666666624
+96,Bedroom Furniture,Queen Bed,2018-02-01,466.6666666666599
+97,Bedroom Furniture,Queen Bed,2018-03-01,-433.3333333333437
+98,Bedroom Furniture,Queen Bed,2018-04-01,-266.66666666667584
+99,Bedroom Furniture,Queen Bed,2018-05-01,1799.9999999999948
+100,Bedroom Furniture,Queen Bed,2018-06-01,866.6666666666631
+101,Bedroom Furniture,Queen Bed,2018-07-01,2733.3333333333303
+102,Bedroom Furniture,Queen Bed,2018-08-01,5399.999999999996
+103,Bedroom Furniture,Queen Bed,2018-09-01,7833.333333333321
+104,Bedroom Furniture,Queen Bed,2018-10-01,8466.666666666657
+105,Bedroom Furniture,Queen Bed,2018-11-01,8666.66666666666
+106,Bedroom Furniture,Queen Bed,2018-12-01,8499.999999999995
+107,Bedroom Furniture,Queen Bed,2019-01-01,8699.999999999996
+108,Bedroom Furniture,Queen Bed,2019-02-01,8599.999999999996
+109,Bedroom Furniture,Queen Bed,2019-03-01,8899.999999999998
+110,Bedroom Furniture,Queen Bed,2019-04-01,8333.33333333333
+111,Bedroom Furniture,Queen Bed,2019-05-01,9333.333333333334
+112,Bedroom Furniture,Queen Bed,2019-06-01,9366.666666666668
+113,Bedroom Furniture,Queen Bed,2019-07-01,8900.000000000002
+114,Bedroom Furniture,Queen Bed,2019-08-01,8300.0
+115,Bedroom Furniture,Room Divider,2018-02-01,0.0
+116,Bedroom Furniture,Room Divider,2018-03-01,0.0
+117,Bedroom Furniture,Room Divider,2018-04-01,0.0
+118,Bedroom Furniture,Room Divider,2018-05-01,0.0
+119,Bedroom Furniture,Room Divider,2018-06-01,0.0
+120,Bedroom Furniture,Room Divider,2018-08-01,0.0
+121,Bedroom Furniture,Room Divider,2018-09-01,0.0
+122,Bedroom Furniture,Room Divider,2018-10-01,0.0
+123,Bedroom Furniture,Room Divider,2018-11-01,0.0
+124,Bedroom Furniture,Room Divider,2018-12-01,0.0
+125,Bedroom Furniture,Room Divider,2019-02-01,0.0
+126,Bedroom Furniture,Room Divider,2019-04-01,0.0
+127,Bedroom Furniture,Room Divider,2019-05-01,0.0
+128,Bedroom Furniture,Room Divider,2019-06-01,0.0
+129,Bedroom Furniture,Room Divider,2019-07-01,0.0
+130,Bedroom Furniture,Room Divider,2019-08-01,0.0
+131,Bedroom Furniture,Twin Bed,2017-10-01,284.375
+132,Bedroom Furniture,Twin Bed,2017-11-01,710.9375
+133,Bedroom Furniture,Twin Bed,2017-12-01,954.6875
+134,Bedroom Furniture,Twin Bed,2018-01-01,2681.25
+135,Bedroom Furniture,Twin Bed,2018-02-01,2843.75
+136,Bedroom Furniture,Twin Bed,2018-03-01,3453.125
+137,Bedroom Furniture,Twin Bed,2018-04-01,4184.375
+138,Bedroom Furniture,Twin Bed,2018-05-01,5931.25
+139,Bedroom Furniture,Twin Bed,2018-06-01,6987.5
+140,Bedroom Furniture,Twin Bed,2018-07-01,8937.5
+141,Bedroom Furniture,Twin Bed,2018-08-01,9912.5
+142,Bedroom Furniture,Twin Bed,2018-09-01,12512.5
+143,Bedroom Furniture,Twin Bed,2018-10-01,13426.5625
+144,Bedroom Furniture,Twin Bed,2018-11-01,14096.875
+145,Bedroom Furniture,Twin Bed,2018-12-01,14950.0
+146,Bedroom Furniture,Twin Bed,2019-01-01,15620.3125
+147,Bedroom Furniture,Twin Bed,2019-02-01,15600.0
+148,Bedroom Furniture,Twin Bed,2019-03-01,15640.625
+149,Bedroom Furniture,Twin Bed,2019-04-01,16270.3125
+150,Bedroom Furniture,Twin Bed,2019-05-01,16757.8125
+151,Bedroom Furniture,Twin Bed,2019-06-01,18220.3125
+152,Bedroom Furniture,Twin Bed,2019-07-01,18748.4375
+153,Bedroom Furniture,Twin Bed,2019-08-01,18809.375
+154,Bedroom Furniture,Wardrobe,2017-10-01,630.0
+155,Bedroom Furniture,Wardrobe,2017-11-01,1485.0
+156,Bedroom Furniture,Wardrobe,2017-12-01,1539.0
+157,Bedroom Furniture,Wardrobe,2018-01-01,1692.0
+158,Bedroom Furniture,Wardrobe,2018-02-01,1773.0
+159,Bedroom Furniture,Wardrobe,2018-03-01,2106.0
+160,Bedroom Furniture,Wardrobe,2018-04-01,2205.0
+161,Bedroom Furniture,Wardrobe,2018-05-01,2790.0
+162,Bedroom Furniture,Wardrobe,2018-06-01,3051.0
+163,Bedroom Furniture,Wardrobe,2018-07-01,3582.0
+164,Bedroom Furniture,Wardrobe,2018-08-01,3915.0
+165,Bedroom Furniture,Wardrobe,2018-09-01,4356.0
+166,Bedroom Furniture,Wardrobe,2018-10-01,4509.0
+167,Bedroom Furniture,Wardrobe,2018-11-01,4869.0
+168,Bedroom Furniture,Wardrobe,2018-12-01,5058.0
+169,Bedroom Furniture,Wardrobe,2019-01-01,5364.0
+170,Bedroom Furniture,Wardrobe,2019-02-01,5337.0
+171,Bedroom Furniture,Wardrobe,2019-03-01,5643.0
+172,Bedroom Furniture,Wardrobe,2019-04-01,5562.0
+173,Bedroom Furniture,Wardrobe,2019-05-01,5634.0
+174,Bedroom Furniture,Wardrobe,2019-06-01,5841.0
+175,Bedroom Furniture,Wardrobe,2019-07-01,5742.0
+176,Bedroom Furniture,Wardrobe,2019-08-01,6255.0
+0,Art & Collectables,Art & Collectables,2017-10-01,275.14814814814827
+1,Art & Collectables,Art & Collectables,2017-11-01,465.0416666666669
+2,Art & Collectables,Art & Collectables,2017-12-01,460.6435185185187
+3,Art & Collectables,Art & Collectables,2018-01-01,558.9768518518521
+4,Art & Collectables,Art & Collectables,2018-02-01,535.8842592592594
+5,Art & Collectables,Art & Collectables,2018-03-01,646.4305555555557
+6,Art & Collectables,Art & Collectables,2018-04-01,863.240740740741
+7,Art & Collectables,Art & Collectables,2018-05-01,942.5324074074077
+8,Art & Collectables,Art & Collectables,2018-06-01,1055.6250000000002
+9,Art & Collectables,Art & Collectables,2018-07-01,1163.50462962963
+10,Art & Collectables,Art & Collectables,2018-08-01,1132.8287037037042
+11,Art & Collectables,Art & Collectables,2018-09-01,1231.5092592592598
+12,Art & Collectables,Art & Collectables,2018-10-01,1339.3935185185192
+13,Art & Collectables,Art & Collectables,2018-11-01,1381.8750000000007
+14,Art & Collectables,Art & Collectables,2018-12-01,1553.944444444445
+15,Art & Collectables,Art & Collectables,2019-01-01,1587.7453703703711
+16,Art & Collectables,Art & Collectables,2019-02-01,1542.310185185186
+17,Art & Collectables,Art & Collectables,2019-03-01,1540.921296296297
+18,Art & Collectables,Art & Collectables,2019-04-01,1747.9490740740748
+19,Art & Collectables,Art & Collectables,2019-05-01,2079.587962962964
+20,Art & Collectables,Art & Collectables,2019-06-01,2030.6805555555566
+21,Art & Collectables,Art & Collectables,2019-07-01,2380.7824074074088
+22,Art & Collectables,Art & Collectables,2019-08-01,2770.7037037037053

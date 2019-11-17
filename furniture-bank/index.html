@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="https://d3js.org/d3.v4.min.js" type="text/javascript"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,700italic,400,600,700" rel="stylesheet" type="text/css">
+    <style>
+      * {
+        font-family: Open Sans, sans-serif;
+      }
+      body {
+        margin: auto;
+        position: relative;
+      }
+      .node {
+        border: solid 1px white;
+        line-height: 12px;
+        overflow: hidden;
+        position: absolute;
+        text-indent: 2px;
+      }
+      tspan {
+        font-size: 12px;
+      }
+      .wrapper {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+      }
+      .group {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: 100%;
+      }
+      .box {
+        background-color: transparent;
+        width: 50%;
+        height: 80%;
+      }
+      .header > h2 {
+        text-align: center;
+      }
+      #multiples-line-chart {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      #multiples-line-chart .chart {
+        border: 1px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class='wrapper'>
+      <div class='container'>
+
+        <div class='header' id='header-Donor'>
+          <h2>Excess Furniture as of <span> 10-2017</span></h2>
+          <p>Donors have been generous in donating their gently-used furniture to Furniture Bank. Over 100,000 individuals experiencing furniture poverty have benefited. However, as Furnuture Bank's operations continue over the years, large and increasing volumes of furniture have yet to be matched to a new home. Finding space to store excess furniture as well as additional money and effort to maintain their condition are costly to a social enterprise.</p>
+        </div>
+
+        <div class='group'>
+          <div class='box'>
+            <div class='chart' id='chart-Donor'></div>           
+          </div>
+          <div class='box' id='multiples-line-chart'>
+            <div class='chart chart1'></div>
+            <div class='chart chart2'></div>
+            <div class='chart chart3'></div>
+            <div class='chart chart4'></div>
+            <div class='chart chart5'></div>
+            <div class='chart chart6'></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script>
+      var timer, mapping
+      const margin = {top: 10, right: 10, bottom: 10, left: 10},
+            width = screen.width*0.5 - margin.left - margin.right,
+            height = screen.height*0.8 - margin.top - margin.bottom,
+            color = d3.scaleOrdinal().range(['#FEE2C4', '#314855', '#ECBBAD', '#798881', '#9D5141', '#A67F48']);
+
+      const format = d3.format(",d")
+      const years = d3.range(2017, 2019)
+      const months = d3.range(1,12)
+      const intervals = ['10-2017', '11-2017', '12-2017', '01-2018', '02-2018', '03-2018', '04-2018', '05-2018','06-2018', '07-2018', '08-2018', '09-2018', '10-2018', '11-2018', '12-2018', '01-2019', '02-2019', '03-2019', '04-2019', '05-2019', '06-2019', '07-2019', '08-2019']
+      const intervals_full = ['Oct 17', 'Sept 17', 'Dec 17', 'Jan 18', 'Feb 18', 'Mar 18', 'Apr 18', 'May 18','Jun 18', 'Jul 18', 'Aug 18', 'Sept 18', 'Oct 18', 'Nov 18', 'Dec 18', 'Jan 19', 'Feb 19', 'Mar 19', 'Apr 19', 'May 19', 'Jun 19', 'Jul 19', 'Aug 19']
+
+      const treemap = d3.treemap()
+          .tile(d3.treemapResquarify)
+          .size([width, height])
+          .padding(d => d.height === 1 ? 1 : 0)
+          .round(true);
+
+      d3.queue() 
+        .defer(d3.csv, "./processed-data/df_product_list.csv")  
+        .defer(d3.csv, './processed-data/mapping_data.csv')
+        .defer(d3.csv, './processed-data/cumsum_data.csv')
+        .await(prepData)
+
+      function prepData(error, products, records, cumsum) {
+        
+        mapping = new Map(products.map(d => [d['Product Family'], d['Product Name']]));
+
+        create(filterDataByCat(records), 'Donor')
+
+      }
+
+      function filterDataByCat(records) {
+
+        var records_new = []
+        records.map((d,i)=>{
+          i === 0 ? null : records_new.push({family: d["Product Family"], name: d["Product Name"], values: intervals.map(key => +d[key] || 1e-6)})
+        })
+        var data =  {keys: intervals, children: nest(records_new, d => mapping.get(d.family), d => mapping.get(d.name))};
+        const sums = data.keys.map((d, i) => d3.hierarchy(data).sum(d => d.values ? Math.round(d.values[i]) : 0).value)
+        data.max = d3.max(sums)
+        data.children = data.children.filter(d=>d.name != "undefined")
+
+        return data
+
+      } 
+
+      function nest(data, ...keys) {
+
+        const nest = d3.nest()
+        for (const key of keys) nest.key(key);
+        function hierarchy({key, values}, depth) {         
+          return {
+            name: key ? key : "Others",
+            children: depth < keys.length - 1
+                ? values.map(d => hierarchy(d, depth + 1)) 
+                : values
+          };
+        }
+
+        return nest.entries(data).map(d => hierarchy(d, 0));
+
+      }
+
+      function create(data, type) {
+
+        let counter = 1
+
+        var root = treemap(d3.hierarchy(data)
+            .sum(d => d.values ? d3.sum(d.values) : 0)
+            .sort((a, b) => b.value - a.value));
+
+        var svg = d3.select("#chart-" + type)
+            .append('svg')
+            .attr("viewBox", `-20 20 ${screen.width*0.5 + 20} ${screen.height*0.8 - 20}`)
+            .style("width", "100%")
+            .style("height", "100%")
+            .style("overflow", "visible")
+            .style("font", "10px sans-serif");
+
+        var header = d3.select("#header-" + type)
+
+        var timeline_data = data.keys.map((key, i) => {
+          const value = root.sum(d => d.values ? d.values[i] : 0).value;
+          return {key, value, i, k: Math.sqrt(value / data.max)};
+        })
+
+        //var box = svg.selectAll("g")
+          //.data(data.keys.map((key, i) => {
+            //const value = root.sum(d => d.values ? d.values[i] : 0).value;
+            //return {key, value, i, k: Math.sqrt(value / data.max)};
+          //}).reverse())
+          //.enter().append("g")
+            //.attr("transform", ({k}) => `translate(${(1 - k) / 2 * width},${(1 - k) / 2 * height})`)
+            //.attr("opacity", ({i}) => i >= counter ? 1 : 0)
+            //.call(g => g.append("text")
+                //.attr("y", -6)
+                //.attr("fill", "#777")
+              //.selectAll("tspan")
+              //.data(({key, value}) => [key, ` ${format(value)}`])
+              //.enter().append("tspan")
+                //.attr("font-weight", (d, i) => i === 0 ? "bold" : null)
+                //.text(d => d))
+            //.call(g => g.append("rect")
+                //.attr("fill", "none")
+                //.attr("stroke", "#ccc")
+                //.attr("width", ({k}) => k * width)
+                //.attr("height", ({k}) => k * height));
+
+        var leaf = svg.selectAll(".leaf").data(layout(root, data, counter))
+          .enter().append("g")
+            .attr('class', 'leaf')
+            .attr("id", function(d) { return d.data.name.replace(/\s/g, '') })
+            .attr("transform", d => `translate(${d.x0},${d.y0})`);
+
+        leaf.append("rect")
+            .attr("id", d => 'rect-' + d.data.name.replace(/\s/g, ''))
+            .attr("fill", d => { while (d.depth > 1) d = d.parent; return color(d.data.name.replace(/\s/g, '')); })
+            .attr("width", d => d.x1 - d.x0)
+            .attr("height", d => d.y1 - d.y0);
+
+        leaf.append("clipPath")
+            .attr("id", d => "clip-" + d.data.name.replace(/\s/g, ''))
+          .append("use")
+            .attr("xlink:href", d => '#rect-' + d.data.name.replace(/\s/g, ''));
+
+        leaf.append("text")
+          .attr("clip-path", d => "url(#clip-" + d.data.name.replace(/\s/g, '') + ")")
+          .selectAll("tspan")
+          .data(d => {
+              var texts =  d.data.name.split(/(?=[A-Z][^A-Z])/g) // split the name of movie
+                .map(v => {
+                    return {
+                        family: d.data.family,
+                        text: v,
+                        x0: d.x0,                        // keep x0 reference
+                        y0: d.y0,                        // keep y0 reference
+                        x1: d.x1                        
+                    }
+                });
+              texts.push({family: d.data.family, text: format(d.value), x0: d.x0, y0: d.y0 })
+              return texts
+          })
+          //.data(d => [d.data.name, format(d.value)])
+          .enter().append("tspan")
+            .attr("x", 3)
+            .attr("y", (d, i, nodes) => `${(i === nodes.length - 1) * 0.3 + 1.1 + i * 0.9}em`)
+            .attr("fill-opacity", (d, i, nodes) => i === nodes.length - 1 ? 0.7 : null)
+            .attr('fill', d=> (d.family=='Bedroom Furniture') | (d.family=='Living Room') ? 'black': 'white')
+            .text(d=>d.text);
+        
+        leaf.append("title")
+            .text(d => d.data.name.replace(/\s/g, ''));
+        
+        window.addEventListener("resize", draw)
+
+        var timer = d3.interval(()=> {
+          //if (counter >= 7) {
+          if (counter >= intervals.length) {
+            timer.stop()
+          } else {
+            update(root, data, leaf, timer)
+            d3.select('.header h2 > span').html(intervals_full[counter])
+          }
+          counter += 1;
+        }, 1000);
+
+        function layout(root, data) {
+
+          const k = Math.sqrt(root.sum(d => d.values ? d.values[counter] : 0).value / data.max);
+          const x = (1 - k) / 2 * width;
+          const y = (1 - k) / 2 * height;
+          return treemap.size([width * k, height * k])(root)
+            .each(d => (d.x0 += x, d.x1 += x, d.y0 += y, d.y1 += y))
+            .leaves();
+
+        }
+
+        function draw() {
+
+          var bounds =  d3.select("#chart-Donor svg").node().getBoundingClientRect()
+          d3.select("#chart-Donor svg").attr("viewBox", `-20 20 ${bounds.width > 400 ? screen.width*0.5 : screen.width*0.25 + 20} ${screen.height*0.8 - 20}`)
+
+        }
+
+        function update(root, data, leaf) {
+
+          leaf.data(layout(root, data))
+            .transition().duration(500)
+            .attr("transform", d => `translate(${d.x0},${d.y0})`)
+            .call(leaf => 
+              leaf.select("rect")
+                .attr("width", d => d.x1 - d.x0)
+                .attr("height", d => d.y1 - d.y0)
+            )
+            .call(leaf => {
+              leaf.selectAll("text")
+                .attr('opacity', d => (d.x1 - d.x0 <= 60 || d.y1 - d.y0 <= 40) ? 0 : 1)
+
+              leaf.select("text tspan:last-child")
+                .text(function(d) { return format(d.value) })
+                //.tween("text", function(d) {
+                  //const i = d3.interpolateNumber(+this.innerHTML.replace(/,/g, ""), d.value);
+                  //console.log(+this.innerHTML.replace(/,/g, ""), d.value)
+                  //return function(t) { 
+                    //console.log(format(i(t)))
+                    //this.innerHTML = format(i(t))
+                  //};
+                //})
+              }
+            )
+            
+        }
+
+        ///////////////////////////////////////////////////////////////////////////
+        //////////////////////////////// Line chart ///////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////
+        function createLineChart() {
+
+          // 2. Create chart dimensions
+          var axisPad = 6
+          dimensions = {
+            width: 330,
+            height: 250,
+            margin: {
+              top: 15,
+              right: 15,
+              bottom: 40,
+              left: 50,
+            },
+          }
+
+          dimensions.boundedWidth = dimensions.width
+            - dimensions.margin.left
+            - dimensions.margin.right
+          dimensions.boundedHeight = dimensions.height
+            - dimensions.margin.top
+            - dimensions.margin.bottom
+
+          // 3. Draw canvas
+          var wrapper = d3.select('.countries-content').append('svg')
+            .attr("width", dimensions.width)
+            .attr("height", dimensions.height)
+
+          bounds = wrapper.append("g")
+            .attr("class","timeline")
+            .attr('transform', "translate(" + dimensions.margin.left + "," + dimensions.margin.top + ")")
+
+          bounds.append("g").attr("class", "x_axis")
+          bounds.append("g").attr("class", "y_axis")
+
+          // 4. Create scales
+          xScaleLine = d3.scaleBand()
+            .domain(d3.range(1973, 2014))
+            .range([0, dimensions.boundedWidth])
+            .padding(0.1)
+
+          yScaleLine = d3.scaleLinear()
+            .domain([0, 30000000000])
+            .range([dimensions.boundedHeight, 0]);
+
+          // 6. Draw peripherals
+          var ticks = xScaleLine.domain().filter((d,i)=>{ return !(i%5) } )
+          const xAxisGenerator = d3.axisBottom()
+            .scale(xScaleLine)
+            .tickSizeOuter(0)
+            .tickValues(ticks)
+
+          yAxisGenerator = d3.axisLeft()
+            .ticks(6)
+            .tickSize(-dimensions.boundedWidth)
+            .tickFormat(d=>"$" + M(d))
+            .tickSizeOuter(0)
+            .scale(yScaleLine)
+
+          const xAxis = d3.select('.x_axis')
+            .call(xAxisGenerator)
+            .style("transform", `translateY(${ dimensions.boundedHeight }px)`)
+            .call(g => {
+              g.selectAll("text").attr('fill', 'white')
+              g.selectAll("line").attr('stroke', 'white')
+              g.select(".domain")
+                .attr('stroke', 'white')
+                .attr('stroke-width', 0.7)
+                .attr('opacity', 0.3)
+            })      
+
+          const yAxis = d3.select('.y_axis')
+            .call(yAxisGenerator)
+            .call(g => {
+              g.selectAll("text").attr('fill', 'white')
+              g.selectAll("line")
+                .attr('stroke', 'white')
+                .attr('stroke-width', 0.7) // make horizontal tick thinner and lighter so that line paths can stand out
+                .attr('opacity', 0.3)
+              g.select(".domain").remove()
+            }) 
+
+          lineGenerator = d3.line()
+            //.defined(d => !isNaN(+d.sum))
+            .x(d => xScaleLine(d.year) + xScaleLine.bandwidth() / 2)
+            .y(d => yScaleLine(+d.sum))
+
+
+          var res_nested = d3.nest() // necessary to nest data so that keys represent each category
+            .key(d=>d.category)
+            .entries(data)
+
+          var glines = bounds.selectAll('.line-group').data(res_nested)
+
+          var entered_lines = glines.enter().append('g').attr('class', 'line-group') 
+
+          entered_lines.append('path').attr('class', 'line') 
+
+          glines.merge(entered_lines).select('.line')  
+            //.transition().duration(500) 
+            .attr('d', function(d) { return lineGenerator(d.values) })
+            .style('stroke', (d, i) => newCountry=='All' ? 'white' :colors[d.key])
+            .style('fill', 'none')
+            .style('opacity', 1)
+            .style('stroke-width', 1)
+
+          glines.exit().remove()
+
+
+        }
+
+      }
+
+    </script>
+  </body>
+</html>

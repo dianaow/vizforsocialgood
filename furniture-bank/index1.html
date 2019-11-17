@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="https://d3js.org/d3.v4.min.js" type="text/javascript"></script>
+    <style>
+      body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        margin: auto;
+        position: relative;
+        width: 960px;
+      }
+      .node {
+        border: solid 1px white;
+        font: 10px sans-serif;
+        line-height: 12px;
+        overflow: hidden;
+        position: absolute;
+        text-indent: 2px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <script>
+      var timer
+      const margin = {top: 40, right: 10, bottom: 10, left: 10},
+            width = 960 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom,
+            color = d3.scaleOrdinal().range(d3.schemeCategory20c);
+
+      const treemap = d3.treemap().size([width, height]);
+
+      const div = d3.select("body").append("div")
+          .style("position", "relative")
+          .style("width", (width + margin.left + margin.right) + "px")
+          .style("height", (height + margin.top + margin.bottom) + "px")
+          .style("left", margin.left + "px")
+          .style("top", margin.top + "px");
+
+      const years = d3.range(2017, 2019)
+      const months = d3.range(1,12)
+      let intervals = []
+      years.map(year => {
+        months.map(month => {
+          intervals.push([month, year]) 
+        })
+      })
+
+      let counter = 1;
+
+      d3.queue()   
+        .defer(d3.csv, './processed-data/mapping_data_new.csv')
+        .await(prepData)
+
+      function prepData(error, csv) {
+
+        if (error) throw error;
+        
+        filterData(csv)
+        timer = d3.interval(()=>filterData(csv), 1500);
+
+      }
+
+      function filterData(csv) {
+
+        const monthly_data = csv.filter(d=>d.YEAR==2017 & d.MONTH==10)
+
+        const nestedData = {
+          "key": "data",
+          "values": 
+            d3.nest()
+            .key(d=>d['Product Family'])
+            .key(d=>d['Product Name'])
+            .rollup(function(v) { return d3.sum(v, function(d) { return d['value']; }) })
+            .entries(monthly_data)
+        }
+
+        const treeData = {
+            "name": "flare",
+            "children": nestedData.values.map(function(major) {
+
+                return {
+                    "name": major.key,
+                    "children": major.values.map(function(region) {
+
+                        return {
+                            "name": region.key,
+                            "size": region.value
+                        };
+
+                    }) //end of map(function(region){
+                };
+
+            }) //end of map(function(major){
+        }; //end of var declaration
+
+        updateTreeMap(treeData)
+
+      }
+
+      function updateTreeMap(data) {
+        
+        const root = d3.hierarchy(data, (d) => d.children).sum((d) => d.size);
+
+        const tree = treemap(root);
+
+        const node = div.datum(root).selectAll(".node")
+            .data(tree.leaves())
+          .enter().append("div")
+            .attr("class", "node")
+            .style("left", (d) => d.x0 + "px")
+            .style("top", (d) => d.y0 + "px")
+            .style("width", (d) => Math.max(0, d.x1 - d.x0 - 1) + "px")
+            .style("height", (d) => Math.max(0, d.y1 - d.y0  - 1) + "px")
+            .style("background", (d) => color(d.parent.data.name))
+            .text((d) => d.data.name);
+
+
+        const newRoot = d3.hierarchy(data, (d) => d.children)
+          .sum(d=>d.size);
+
+        node.data(treemap(newRoot).leaves())
+          .transition()
+            .duration(1500)
+            .style("left", (d) => d.x0 + "px")
+            .style("top", (d) => d.y0 + "px")
+            .style("width", (d) => Math.max(0, d.x1 - d.x0 - 1) + "px")
+            .style("height", (d) => Math.max(0, d.y1 - d.y0  - 1) + "px")
+
+        counter += 1;
+        if (counter > intervals.length) {
+          timer.stop()
+        }
+
+      }
+
+    </script>
+  </body>
+</html>
