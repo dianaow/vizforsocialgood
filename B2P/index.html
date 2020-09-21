@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="https://d3js.org/d3.v4.min.js" type="text/javascript"></script>
+    <script src="https://d3js.org/topojson.v2.min.js"></script>
+    <script src="./js/bezier.js"></script>
+    <script src="https://unpkg.com/deck.gl@latest/dist.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+    <style>
+      @font-face {
+          font-family: 'Akk';
+          font-weight: 'regular';
+          src: local('Akk'), url("./data/Brand Guide and Assets/Fonts/AkkBd_Pro.otf") format("opentype");
+      }
+      @font-face {
+          font-family: 'Akk';
+          font-weight: 'bold';
+          src: local('Akk'), url("./data/Brand Guide and Assets/Fonts/AkkRg_Pro.otf") format("opentype");
+      }
+      @font-face {
+          font-family: 'SentinelBook';
+          src: local('SentinelBook'), url("./data/Brand Guide and Assets/Fonts/Sentinel-Book.otf") format("opentype");
+      }
+      .mapboxgl-map {
+        height: 100vh !important; 
+      }
+      #deckgl-overlay {
+        height: 100vh !important;
+      }
+      /* GENERAL */
+      body {
+        position: relative;
+        background:#F0EFEF;
+        color: black;
+        margin: 0px;
+      }
+      h2, h3 {
+        font-family: 'SentinelBook', sans-serif;
+      }
+      h1, h4, p, text {
+        font-family: 'Akk', sans-serif;
+        font-weight: regular; 
+      }
+      img {
+        padding: 5px;
+      }
+      .btn {
+        color: black;
+        background: transparent; 
+        border: 2px solid black; 
+        padding: 8px 16px;
+        text-align: center;
+        display: inline-block;
+        font-size: 0.8em;
+        margin: 4px 2px;
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        cursor: pointer;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+
+      .btn:hover {
+          background-color: black;
+          color: white;
+      }
+
+      #header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        padding: 30px;
+        width: 40%;
+      }
+      #header-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        padding: 30px;
+        width: 40%;
+        background-color: white;
+        opacity: 0.5;
+        height: 450px;
+        z-index: 1;
+      }
+      #map{
+        width: 100%;
+        height: 100vh;
+      }
+
+      .wrapper {
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+      }
+      .box-group {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 90%;
+        justify-content: center;
+      }
+
+      /* SECTION 3 */
+      /* Small Multiples of Maps */
+      .section-3 {
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .bridge-container {
+        display: flex;
+        height: 60px;
+        flex-direction: row;
+      }
+      .bridge-container .stats {
+        padding: 4px 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .barchart-container {
+        height: 85px
+      }
+      .map-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
+      .row {
+        display: flex;
+        flex: 1;
+      }
+
+      .item {
+        padding: 15px;
+        flex: 1;
+      }
+      .domain {
+        opacity: 0;
+      }
+
+      .section-4 {
+        width: 100%;
+        height: auto;
+        display: flex;
+      }
+      .travel-summary-container {
+        height: 70vh;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="header-bg"></div>
+    <div id="header">
+      <img src='./data/Brand Guide and Assets/Logos/Primary Lockup_English/PNG/B2P_PrimaryLockup_Green.png' width='400px'/>
+      <h3>
+        Bridges to Prosperity (B2P) works with isolated communities to build trail bridges over impassable rivers, and create lasting connections to essential services and opportunities. Since 2012, over 70 bridges have been built in Rwanda, serving almost 380,000 people. 
+      </h3>
+      <h3>B2P operated a population catchment survey program to understand the geographic reach of 6 selected trail bridges in Rwanda and the specific ways in which these bridges serve as connections to key destinations for rural communities</h3>
+    </div>
+    <div id='map'></div>
+
+    <div class='wrapper'>
+      <div class='box-group'>
+
+        <div class="section-3">
+          <div style="padding: 15px 15px 0px 15px">
+            <p>There were a total of 403 unique routes, involving bridge crossings. To compare the geographic reach of each bridge, each route is split into 2 segments connecting the home village to the bridge, and then to the destination. Path segments are color-coded according to the most popular travel purpose category.</p>
+          </div>
+          <div class="row">
+            <div class="item">
+              <div class='bridge-container bridge-container-Gahororo'></div>
+              <div class="barchart-container barchart-container-Gahororo"></div>
+              <div class="map-container map-container-Gahororo"></div>
+            </div>
+            <div class="item">
+              <div class='bridge-container bridge-container-Kanyarira'></div>
+              <div class="barchart-container barchart-container-Kanyarira"></div>
+              <div class="map-container map-container-Kanyarira"></div>          
+            </div>
+            <div class="item">
+              <div class='bridge-container bridge-container-Muregeya'></div>
+              <div class="barchart-container barchart-container-Muregeya"></div>
+              <div class="map-container map-container-Muregeya"></div>           
+            </div>
+          </div>
+          <div class="row">
+            <div class="item">
+              <div class='bridge-container bridge-container-Ruharazi'></div>
+              <div class="barchart-container barchart-container-Ruharazi"></div>
+              <div class="map-container map-container-Ruharazi"></div>       
+            </div>
+            <div class="item">  
+              <div class='bridge-container bridge-container-Rwamamara'></div>
+              <div class="barchart-container barchart-container-Rwamamara"></div>
+              <div class="map-container map-container-Rwamamara"></div>   
+            </div>
+            <div class="item">
+              <div class='bridge-container bridge-container-Rwimvubu'></div>
+              <div class="barchart-container barchart-container-Rwimvubu"></div>
+              <div class="map-container map-container-Rwimvubu"></div>
+            </div>
+        </div>
+
+      </div>
+
+      <div class="section-4">
+        <div class="item">
+          <div>
+            <h2 style="margin: 0px;">6,530 total people of all ages were counted during the catchment survey program, travelling across the 6 bridges for a myriad of activities.</h2>
+            <p>On average, each bridge had 14 survey days, with the program lasting from August 2019 to March 2020.</p>
+          </div>
+          <div class="travel-summary-container"></div>
+        </div>
+        <div class='item'>
+          <img src='./data/Brand Guide and Assets/Photos/Rwanda_Suspended_Women Crossing.jpg' width='100%'/>
+          <img src='./data/Brand Guide and Assets/Photos/Rwanda_Suspension_Families Crossing to Market.jpg' width='48%'/>
+          <img src='./data/Brand Guide and Assets/Photos/Rwanda_Suspended_Children Crossing.jpg' width='48%'/>
+        </div>
+      </div>
+
+      <div class='footer'>
+        <h3>Help B2P connect rural communities and improve lives</h3>
+        <div>
+          <input type="button" class='btn btn-learn-more' value='Learn more'/>
+          <input type="button"class='btn btn-donate' value='Donate'/>
+        </div>
+        <p style="font-size: 9px">Data and images: Bridges to Prosperity</p>
+        <p style="font-size: 9px">Created by: Diana Ow</p>
+      </div>
+    </div>
+  </div>
+    <script>
+    var ipad = Math.max(window.innerWidth, screen.width) <= 1024 & (Math.abs(screen.orientation.angle == 90))
+    var mobile = Math.max(window.innerWidth, screen.width) < 450
+    const categoriesSorted = ['Livelihood', 'Other', 'Worship', 'Education', 'Healthcare']
+
+    let colorScale = d3.scaleOrdinal()
+      .range(['#161345', '#A9A9A9', '#EA7149', '#009149', '#66C3E3'])
+      .domain(categoriesSorted)
+
+    let colorAccessor = d => colorScale(d.key)
+
+    const {DeckGL, ArcLayer, TextLayer} = deck;
+
+    d3.select('.btn-learn-more').on("click", function () { 
+      location.href = "https://www.bridgestoprosperity.org/why-bridges/";
+    });
+
+    d3.select('.btn-donate').on("click", function () { 
+      location.href = "https://donate.bridgestoprosperity.org/give/284722/#!/donation/checkout";
+    });
+
+    init()
+
+    function init() {
+
+      d3.queue()   
+        .defer(d3.csv, './data/home_bridge_dest.csv') 
+        .defer(d3.csv, './data/bridges.csv') 
+        .defer(d3.csv, './data/bridges_travel_type.csv') 
+        .defer(d3.csv, './data/summary_travel_type.csv') 
+        .defer(d3.json, './data/Rwanda Boundaries/rwa_district/District.geojson')   
+        .await(initializeData) 
+
+    }
+
+    function initializeData(error, csv, bridges, bridges_summary, travel_summary, geojson){
+
+      const lineScale = d3.scaleSqrt()
+        .range([0.5, 500])
+        .domain([0, d3.max(csv, d=>d.value)])
+
+      function initArcLayer(){
+        return new ArcLayer({
+          data: csv,
+          id: 'arc-layer',
+          getSourcePosition: d => [+d['Village_Lon'], +d['Village_Lat']],
+          getTargetPosition: d => [+d['Bridge_Lon'],  +d['Bridge_Lat']],
+          getSourceColor: [22, 19, 69],
+          getTargetColor: [22, 19, 69],
+          getWidth: d => lineScale(d),
+          pickable: false,
+          greatCircle: true
+        })  
+      }
+
+      function initTextLayer(){
+        return new TextLayer({
+          id: 'text-layer',
+          data: bridges,
+          pickable: false,
+          getPosition: d => [+d['Longitude'], +d['Latitude']],
+          getText: d => d['Site name'],
+          getSize: 20,
+          getColor: [0, 145, 73],
+          getTextAnchor: 'middle',
+          getAlignmentBaseline: 'bottom',
+          getPixelOffset: [0, 20],
+          fontFamily: 'SentinelBook',
+          backgroundColor: [255, 255, 255]
+        });
+  
+      }
+
+      const token = 'pk.eyJ1IjoiZGlhbmFtZW93IiwiYSI6ImNqcmh4aWJnOTIxemI0NXA0MHYydGwzdm0ifQ.9HakB25m0HLT-uDY2yat7A'
+      const deckgl = new DeckGL({
+        mapboxApiAccessToken: token,
+        mapStyle: 'mapbox://styles/dianameow/ckf6q2fin3t9t19pfdme4xeak',
+        initialViewState: {
+          longitude: 29.8,
+          latitude: -2.2,
+          zoom: 9.3,
+          pitch: 60,
+          bearing: 90,
+          renderWorldCopies: 1,
+          interactive: false
+        },
+        controller: false,
+        layers: [
+          initArcLayer(), initTextLayer()
+        ]
+      });
+
+      let location_transforms = {"Gahororo": {x: 200, y:250}, "Kanyarira": {x: 200, y:150}, "Muregeya": {x: 200, y:150}, "Ruharazi": {x: 200, y:320}, "Rwamamara": {x: 200, y:100}, "Rwimvubu": {x: 200, y:320}} 
+
+      bridges.forEach((d,i)=>{
+        let transform = location_transforms[d['Site name']]
+        d.geojson = geojson
+        d.translateX = transform.x
+        d.translateY = transform.y
+      })
+
+      const groups = d3.nest()
+        .key(function(d) { return d['Bridge Site'] })
+        .entries(csv)
+
+      groups.map(function(d,i){
+        let plotWidth = document.querySelector(".map-container-"+d.key).getBoundingClientRect().width
+        let plotHeight = mobile===true ? plotWidth : plotWidth/1.6
+
+        let bridge = bridges.find(el=>el['Site name'] === d.key)
+        let points = csv.filter(el=>el['Bridge Site'] === d.key)
+        let data = bridges_summary.filter(el=>el['Bridge Site'] === d.key)
+
+        createPanel(bridge)
+        createMap(bridge, points, plotWidth, plotHeight)
+        drawBarChart(
+          '.barchart-container-' + data[0]['Bridge Site'], 
+          data, 
+          {width: plotWidth, height: 82, margin: {top: 10, right: 20, bottom: 20, left: 60}}, 
+          {categories: categoriesSorted, xmax: 310, colorAccessor, key: 'key', type: 'mini'}
+        )
+      })
+
+      let barchart = document.querySelector(".travel-summary-container").getBoundingClientRect()
+      let chartWidth = barchart.width
+      let chartHeight = barchart.height
+      drawBarChart(
+        ".travel-summary-container", 
+        travel_summary, 
+        {width: chartWidth, height: chartHeight, margin: {top: 10, right: 40, bottom: 20, left: 170}}, 
+        {categories: travel_summary.map(d=>d['Sub-category']), xmax: d3.max(travel_summary, d=>+d.value), colorAccessor, key: 'Sub-category'} 
+      )
+
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    ////////////////////////// Create panel for each bridge ///////////////////
+    ///////////////////////////////////////////////////////////////////////////
+    function createPanel(data) {
+
+      let panel = d3.select(".bridge-container-"+data['Site name'])
+
+      panel.append("div").append('h2')
+        .html(data['Site name'])
+
+      let date = panel.append("div").attr("class", "stats")
+
+      date.append('p')
+        .style('font-size', '8px')
+        .style('margin', '0px')
+        .html('Bridge completion')
+
+      date.append('p')
+        .style('margin', '2px 0px')
+        .html(data['Bridge completion date'])
+
+      let count = panel.append("div").attr("class", "stats")
+
+      count.append('p')
+        .style('font-size', '8px')
+        .style('margin', '0px')
+        .html('People count per survey day')
+           
+      count.append('p')
+        .style('margin', '2px 0px')
+        .html(Math.floor(data['count per day']))
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    ////////////////////// Create mini maps for each bridge ///////////////////
+    ///////////////////////////////////////////////////////////////////////////
+    function createMap(data, points, plotWidth, plotHeight) {
+
+      var svg = d3.select(".map-container-"+data['Site name']).append("svg")
+                  .classed("svg-content",true)
+                  .attr('viewBox', `0 0 960 600`)
+                  //.attr("preserveAspectRatio", "xMinYMin meet")
+                  .attr("width", plotWidth)
+                  .attr("height", plotHeight)
+                  .attr("transform", "translate(" + 0 + "," + (mobile===true ? 40 : 0) + ")")
+
+      var projection = d3.geoMercator()
+         .center([data['Longitude'], data['Latitude']]) 
+         .scale([plotWidth*300]) // scale to fit group width
+         .translate([plotWidth/2+data['translateX'], plotHeight/2+data['translateY']]) 
+
+      var path = d3.geoPath()
+         .projection(projection)
+
+      const g = svg.append('g').attr('class', 'map')
+
+      const mapPaths = g.append('g').attr('class', 'map_paths')
+
+      mapPaths.selectAll("path")
+         .data(data.geojson.features)
+         .enter().append("path")
+         .attr("d", path)
+         .attr("id", function(d, i) { return "path-" + d.properties["Village_ID"] })
+         .attr('fill', 'white')
+         .attr('stroke', 'black')
+         .attr('stroke-width', '0.4px')
+
+      drawLinksMap(g, projection, points)
+
+      zoomableMap(svg, g)
+
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    //////////////////////////////// Zoomable map /////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+    function zoomableMap(svg, g){
+      const mapWidth = svg.node().getBoundingClientRect().width;
+      const mapHeight = svg.node().getBoundingClientRect().height;
+
+      const zoom = d3.zoom()
+        .scaleExtent([1, 10])
+        //.translateExtent([[-mapWidth, -mapHeight], [mapWidth, mapHeight]])
+        //.extent([[0,0], [mapWidth, mapHeight]])
+        .on("zoom", zoomed)
+
+      function zoomed(d){
+
+        const {x,y,k} = d3.event.transform
+        let t = d3.zoomIdentity
+        t =  t.translate(x,y).scale(k)
+        g.attr("transform", t)
+
+      }  
+
+      svg.call(zoom)
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////// Draw ALL net flow paths on map ////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////// 
+    function drawLinksMap(svg, projection, data) {
+
+      let all_arcs = svg.append("g").attr("class","all_arcs")
+      let all_points = svg.append("g").attr("class","all_points")
+
+      let arcData = createLinks(data, projection)
+      
+      arcData.forEach(d=>{
+        update(all_arcs, all_points, d)
+      })
+
+      // const opacityScale = d3.scaleSqrt()
+      //   .range([0.5, 1])
+      //   .domain([0, d3.max(arcData, d=>d.value)])
+
+      // const lineScale = d3.scaleSqrt()
+      //   .range([1, 5])
+      //   .domain([0, d3.max(arcData, d=>d.value)])
+
+      // var arcPaths = all_arcs.selectAll("path").data(arcData)
+
+      // arcPaths.exit().remove()
+
+      // var entered_arcs = arcPaths.enter().append("path")
+      //   .merge(arcPaths)
+      //   //.transition().duration(500)
+      //   .attr("class", "connector")
+      //   .attr('id', function(d,i){ return 'connector-' + i })
+      //   //.attr('d', area)
+      //   .attr('d', function(d) { 
+      //     return line(d, 'sourceLocation', 'targetLocation')
+      //   })
+      //   .attr('fill', 'none')
+      //   .attr('opacity', function(d) { return opacityScale(d.value) })
+      //   .attr('stroke-width', function(d) { return lineScale(d.value) })
+      //   .style("stroke", function(d,i) { return d.color })
+
+      // entered_arcs.each(function(d){
+      //   let length = this.getTotalLength()
+      // })
+
+    }
+
+    function createLinks(data, projection) {
+
+      const rScale = d3.scaleSqrt()
+        .range([1, 20])
+        .domain([0, 1000])
+
+      const opacityScale = d3.scaleSqrt()
+        .range([0.8, 1])
+        .domain([0, 1000])
+
+      var arcData = []
+      data.map((d,i)=>{
+        let pointS = projection([+d['Village_Lon'], +d['Village_Lat']])
+        let pointT = projection([+d['Bridge_Lon'], +d['Bridge_Lat']])
+        let cS = {x: pointS[0], y: pointS[1]}
+        let cT = {x: pointT[0], y: pointT[1]}
+        arcData.push({
+          index: i,
+          value: +d['value'],
+          sourceName: +d['Village_ID'],
+          targetName: d['Bridge Site'],
+          sourceLocation: [cS.x, cS.y],
+          targetLocation: [cT.x, cT.y],
+          color: colorScale(d['Purpose of Travel for Summary']),
+          radius: rScale(+d['value'])/2,
+          opacity: opacityScale(+d['value'])
+        })    
+      }) 
+      return arcData
+
+    } 
+
+    function line(d, sourceName, targetName){
+
+      var sourceLngLat = d[sourceName],
+          targetLngLat = d[targetName];
+
+      if (targetLngLat && sourceLngLat) {
+
+        var sourceX = sourceLngLat[0],
+            sourceY = sourceLngLat[1];
+
+        var targetX = targetLngLat[0],
+            targetY = targetLngLat[1];
+
+        var path = [
+          "M", sourceX, sourceY, 
+          "L", targetX, targetY
+        ].join(" ")
+
+        return path
+
+      } else {
+        return "M0,0,l0,0z";
+      }
+    }
+
+    function update(svg, svg1, data) {
+      let points = [
+        [data['targetLocation'][0], data['targetLocation'][1]], 
+        [(data['targetLocation'][0]+data['sourceLocation'][0])/2, ((data['targetLocation'][1]+data['sourceLocation'][1])/2)-0.01], 
+        [data['sourceLocation'][0], data['sourceLocation'][1]],
+      ]
+      const curve = new Bezier(points.flat());
+
+      let offset1 = 0
+      let offset2 = data['radius']
+      const outline = curve.outline(offset1, offset1, offset2, offset2);
+
+      let fullPath = ""
+      outline.curves.forEach((c,i) => {
+        let path = drawCurve(svg, c, data) 
+        if(i>0){
+          path = path.replace("M", " L")
+        }
+        fullPath += path
+      });
+
+      svg.append("path")
+          .attr("class", "curve")
+          .attr('id', 'curve-' + data['sourceName'] + '-' + data['targetName'])
+          .attr('d', fullPath)
+          .attr('fill', data.color)
+          .attr('opacity', data.opacity)
+          .attr('stroke-width', 0.5)
+          .attr("stroke", data.color) 
+
+      // let circles = [
+      //   {x: data['targetLocation'][0], y: data['targetLocation'][1], r: 0, color: data['color'], opacity: data['opacity'] }, 
+      //   {x: data['sourceLocation'][0], y: data['sourceLocation'][1], r: data['radius'], color: data['color'], opacity: data['opacity'] }
+      // ]
+      // drawCircle(svg1, circles[0]);
+      // drawCircle(svg1, circles[1]);
+    }
+
+    function drawCurve(svg, curve, data, i, offset) {
+      offset = offset || { x:0, y:0 };
+      var ox = offset.x;
+      var oy = offset.y;
+
+      const path = d3.path()
+      var p = curve.points, i;
+      path.moveTo(p[0].x + ox, p[0].y + oy);
+      if (p.length === 3) {
+        path.quadraticCurveTo(
+          p[1].x + ox, p[1].y + oy,
+          p[2].x + ox, p[2].y + oy
+        );
+      }
+      if (p.length === 4) {
+        path.bezierCurveTo(
+          p[1].x + ox, p[1].y + oy,
+          p[2].x + ox, p[2].y + oy,
+          p[3].x + ox, p[3].y + oy
+        );
+      }
+
+      return path._
+
+    }
+
+    function drawCircle(svg, data) {
+
+      svg.append("circle")
+        .attr('class', 'bubble')
+        .attr('transform', 'translate(' + data.x + "," + data.y + ")")
+        .attr('r', data.r)
+        .attr('stroke', data.color)
+        .attr('stroke-width', 0)
+        .attr('stroke-opacity', 1)
+        .attr('fill', data.color)
+        .attr('fill-opacity', data.opacity)
+
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    ////////////////////////////// Draw bar chart /////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+    function drawBarChart(obj, data, dims, options){
+
+      let width = dims.width - dims.margin.left - dims.margin.right
+      let height = dims.height - dims.margin.top - dims.margin.bottom
+
+      let svg = d3.select(obj)
+        .append('svg')
+        .attr("width", width + dims.margin.left + dims.margin.right)
+        .attr("height", height + dims.margin.top + dims.margin.bottom)
+        .append("g")
+          .attr("transform", "translate(" + dims.margin.left + "," + dims.margin.top + ")");
+
+      const y = d3.scaleBand()
+        .range([0, height])
+        .domain(options.categories)
+        .padding(0.2);
+
+      const x = d3.scaleLinear()
+        .domain([0, options.xmax])
+        .range([0, width]);
+
+      const xAxis = d3.axisBottom(x)
+        .ticks(5)
+
+      if(options.type === 'mini'){
+        svg.append("g")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis)
+      }
+
+      svg.append("g")
+        .attr("class", "myYaxis")
+        .call(d3.axisLeft(y));
+
+      svg.selectAll("rect").data(data)
+        .enter()
+        .append("rect")
+          .attr("y", function(d) { return y(d[options.key]); })
+          .attr("height", y.bandwidth())
+          .attr("width", function(d) { return x(d.value); })
+          .attr("fill", options.colorAccessor)
+
+      if(options.type !== 'mini'){
+        svg.selectAll("text.travel-summary").data(data)
+          .enter()
+          .append("text")
+            .attr('class', 'travel-summary')
+            .attr("y", function(d) { return y(d[options.key]) + y.bandwidth()/2; })
+            .attr("x", function(d) { return x(d.value)+5; })
+            .attr("fill", options.colorAccessor)
+            .attr('font-size', '12px')
+            .attr('alignment-baseline', 'middle')
+            .text(d => d.value)
+
+        svg
+          .append("text")
+            .attr('transform', `translate(${-155},${y('Animal husbandry')}) rotate(-90)`)
+            .attr('text-anchor', 'middle')
+            .attr("fill", '#161345')
+            .text('Livelihood')  
+
+        svg
+          .append("text")
+            .attr('transform', `translate(${-155},${y('Government or civic activities')}) rotate(-90)`)
+            .attr('text-anchor', 'middle')
+            .attr("fill", '#A9A9A9')
+            .text('Other')
+      }         
+    }
+    </script>
+  </body>
+
+</html>

@@ -1,0 +1,87 @@
+%!Adobe-FontList 1.20
+%Locale:0x409
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Invalid
+OutlineFileName:/Users/matthewpamer/Desktop/MISC/BridgestoProsperity/_Final/Brand Guidelines_Final Folder/Document fonts/AdobeFnt21.lst
+FileLength:1823
+FileModTime:594082194
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Type1
+FontName:AkkuratPro-Bold
+FamilyName:Akkurat Pro
+StyleName:Bold
+MenuName:Akkurat Pro
+StyleBits:2
+WeightClass:700
+WidthClass:5
+AngleClass:0
+FullName:Akkurat Pro Bold
+WritingScript:Roman
+OutlineFileName:/Users/matthewpamer/Desktop/MISC/BridgestoProsperity/_Final/Brand Guidelines_Final Folder/Document fonts/AkkBd_Pro.otf
+DataFormat:sfntData
+UsesStandardEncoding:yes
+isCFF:yes
+hasSVG:no
+VariableFontType:NonVariableFont
+FileLength:152708
+FileModTime:194093318
+NameArray:0,Mac,4,Akkurat Pro Bold
+NameArray:0,Win,1,Akkurat Pro
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Type1
+FontName:Sentinel-Book
+FamilyName:Sentinel
+StyleName:Book
+MenuName:Sentinel Book
+StyleBits:0
+WeightClass:325
+WidthClass:5
+AngleClass:0
+FullName:Sentinel Book
+WritingScript:Roman
+OutlineFileName:/Users/matthewpamer/Desktop/MISC/BridgestoProsperity/_Final/Brand Guidelines_Final Folder/Document fonts/Sentinel-Book.otf
+DataFormat:sfntData
+UsesStandardEncoding:yes
+isCFF:yes
+hasSVG:no
+VariableFontType:NonVariableFont
+FileLength:154876
+FileModTime:591345524
+NameArray:0,Mac,4,Sentinel Book
+NameArray:0,Win,1,Sentinel Book
+NameArray:0,Win,16,Sentinel
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Type1
+FontName:AkkuratPro-Regular
+FamilyName:Akkurat Pro
+StyleName:Regular
+MenuName:Akkurat Pro
+StyleBits:0
+WeightClass:400
+WidthClass:5
+AngleClass:0
+FullName:Akkurat Pro Regular
+WritingScript:Roman
+OutlineFileName:/Users/matthewpamer/Desktop/MISC/BridgestoProsperity/_Final/Brand Guidelines_Final Folder/Document fonts/AkkRg_Pro.otf
+DataFormat:sfntData
+UsesStandardEncoding:yes
+isCFF:yes
+hasSVG:no
+VariableFontType:NonVariableFont
+FileLength:152116
+FileModTime:194093346
+NameArray:0,Mac,4,Akkurat Pro Regular
+NameArray:0,Win,1,Akkurat Pro
+%EndFont
+
