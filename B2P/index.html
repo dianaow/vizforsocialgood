@@ -167,6 +167,15 @@
         text-align: center;
         padding: 10px;
       }
+      .footer p {
+        font-size: 9px;
+      }
+      .footer a {
+        color: black;
+      }   
+      .footer a:visited, a:hover, a:focus {
+        color: black;
+      }    
     </style>
   </head>
 
@@ -175,9 +184,9 @@
     <div id="header">
       <img src='./data/Brand Guide and Assets/Logos/Primary Lockup_English/PNG/B2P_PrimaryLockup_Green.png' width='400px'/>
       <h3>
-        Bridges to Prosperity (B2P) works with isolated communities to build trail bridges over impassable rivers, and create lasting connections to essential services and opportunities. Since 2012, over 70 bridges have been built in Rwanda, serving almost 380,000 people. 
+        Bridges to Prosperity (B2P) works with isolated communities to build trail bridges over impassable rivers, and create lasting connections to essential services and opportunities. <span style="font-weight: 900; color: #009149;">Since 2012, over 70 bridges have been built in Rwanda, serving almost 380,000 people</span>. 
       </h3>
-      <h3>B2P operated a population catchment survey program to understand the geographic reach of 6 selected trail bridges in Rwanda and the specific ways in which these bridges serve as connections to key destinations for rural communities</h3>
+      <h3>B2P operated a population catchment survey program to understand the geographic reach of 6 selected trail bridges in <span style="font-weight: 900; color: #009149; font-size: 24px;">Rwanda</span> and the specific ways in which these bridges serve as connections to key destinations for rural communities</h3>
     </div>
     <div id='map'></div>
 
@@ -228,8 +237,8 @@
       <div class="section-4">
         <div class="item">
           <div>
-            <h2 style="margin: 0px;">6,530 total people of all ages were counted during the catchment survey program, travelling across the 6 bridges for a myriad of activities.</h2>
-            <p>On average, each bridge had 14 survey days, with the program lasting from August 2019 to March 2020.</p>
+            <h2 style="margin: 0px;">6,530 people of all ages were counted during the catchment survey program, travelling across the 6 bridges for a myriad of activities.</h2>
+            <p>On average, each bridge were surveyed on 14 separate days, with the program lasting from August 2019 to March 2020.</p>
           </div>
           <div class="travel-summary-container"></div>
         </div>
@@ -246,8 +255,9 @@
           <input type="button" class='btn btn-learn-more' value='Learn more'/>
           <input type="button"class='btn btn-donate' value='Donate'/>
         </div>
-        <p style="font-size: 9px">Data and images: Bridges to Prosperity</p>
-        <p style="font-size: 9px">Created by: Diana Ow</p>
+        <p>Data & images: Bridges to Prosperity</p>
+        <p>Designed & developed by: Diana Ow</p>
+        <p><a href="https://github.com/dianaow/vizforsocialgood/blob/master/B2P/index.html" target="_blank">Code </a> | <a href="https://github.com/dianaow/vizforsocialgood/blob/master/B2P/data_processing.ipynb" target="_blank"> Analysis</a></p>
       </div>
     </div>
   </div>
@@ -532,11 +542,11 @@
 
     function createLinks(data, projection) {
 
-      const rScale = d3.scaleSqrt()
-        .range([1, 20])
+      const rScale = d3.scaleLinear()
+        .range([0.5, 20])
         .domain([0, 1000])
 
-      const opacityScale = d3.scaleSqrt()
+      const opacityScale = d3.scaleLinear()
         .range([0.8, 1])
         .domain([0, 1000])
 

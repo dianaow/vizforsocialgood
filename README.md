@@ -10,3 +10,7 @@
 
 - Furniture Bank (ongoing)
   - [Challenge Description](https://www.vizforsocialgood.com/join-a-project/2019/9/23/furniture-bank)
+
+- Bridges to Prosperity
+  - [Challenge Description](https://www.vizforsocialgood.com/join-a-project/bridges-to-prosperity)
+  - Live site [here](https://www.dianameow.com/vizforsocialgood)
