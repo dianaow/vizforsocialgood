@@ -124,12 +124,16 @@
         height: 60px;
         flex-direction: row;
       }
+      .bridge-container .title {
+        padding-right: 16px;
+      }
       .bridge-container .stats {
-        padding: 4px 16px;
+        padding: 4px 8px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        font-size: 14px;
       }
 
       .barchart-container {
@@ -175,7 +179,80 @@
       }   
       .footer a:visited, a:hover, a:focus {
         color: black;
-      }    
+      }   
+
+      .testimonials {
+        position: relative;
+      } 
+      .testimonial-1 {
+        position: absolute;
+        top: 20px;
+        left: 0;
+        width: 300px;
+        height: 150px;
+        background-color: white;
+        border: 1px solid black;
+        box-shadow: 4px 8px;
+        font-size: 11px; 
+      } 
+      .testimonial-2 {
+        position: absolute;
+        top: 50%;
+        left: 55%;
+        width: 300px;
+        height: 130px;
+        background-color: white;
+        border: 1px solid black;
+        box-shadow: 4px 8px;
+        font-size: 11px; 
+      } 
+      @media only screen and (max-width : 1024px) {   
+        .travel-summary-container {
+          height: 50vh;
+        }
+        .testimonial-1 {
+          position: absolute;
+          top: 75%;
+          left: 20%;
+        } 
+        .testimonial-2 {
+          position: absolute;
+          top: 52%;
+          left: 36%;
+        } 
+      }
+      @media only screen 
+      and (max-width : 1366px) 
+      and (orientation : landscape) {   
+        .testimonial-1 {
+          position: absolute;
+          top: 54%;
+          left: 50%;
+        } 
+        .testimonial-2 {
+          position: absolute;
+          top: 75%;
+          left: 50%;
+        } 
+      }
+      @media only screen and (min-width : 1680px) {   
+        .testimonial-1 {
+          position: absolute;
+          top: 20px;
+          left: 0;
+          width: 400px;
+          height: 180px;
+          font-size: 14px; 
+        } 
+        .testimonial-2 {
+          position: absolute;
+          top: 53%;
+          left: 58%;
+          width: 320px;
+          height: 160px;
+          font-size: 14px; 
+        } 
+      }
     </style>
   </head>
 
@@ -195,7 +272,7 @@
 
         <div class="section-3">
           <div style="padding: 15px 15px 0px 15px">
-            <p>There were a total of 403 unique routes, involving bridge crossings. To compare the geographic reach of each bridge, each route is split into 2 segments connecting the home village to the bridge, and then to the destination. Path segments are color-coded according to the most popular travel purpose category.</p>
+            <p>There were a total of 403 unique routes, involving bridge crossings, connecting 183 villages.<span style="opacity: 0.5; color: #000;"> To compare the geographic reach of each bridge, each route is split into 2 segments connecting the home village to the bridge, and then to the destination. Path segments are color-coded according to the most popular travel purpose category, with widths representing travel volume.</span></p>
           </div>
           <div class="row">
             <div class="item">
@@ -237,20 +314,31 @@
       <div class="section-4">
         <div class="item">
           <div>
-            <h2 style="margin: 0px;">6,530 people of all ages were counted during the catchment survey program, travelling across the 6 bridges for a myriad of activities.</h2>
+            <h2 style="margin: 0px;"><span style="opacity: 0.5; color: #000;">6,530 people of all ages were counted during the catchment survey program, travelling across the 6 bridges for a myriad of activities.</span> A much larger population of 36,659 is estimated to be directly served by the 6 bridges.</h2>
             <p>On average, each bridge were surveyed on 14 separate days, with the program lasting from August 2019 to March 2020.</p>
           </div>
           <div class="travel-summary-container"></div>
         </div>
-        <div class='item'>
+        <div class='item testimonials'>
+          <div class='testimonial-1'>
+            <h3 style="margin: 0px; padding: 10px 10px 0px 10px">Angelique</h3>
+            <p style="padding: 10px">I started school when I was 10 because I couldn't cross the old bridge by myself. I didn't study at nursery age, and when you study at nursery age, you learn more things. I used to be 30th in my class. I had repeated bad performance because I missed school. Now I'm 6th in my class - my marks have improved.</p>
+          </div>
+          <div class='testimonial-2'>
+            <h3 style="margin: 0px; padding: 10px 10px 0px 10px">Dativa</h3>
+            <p style="padding: 10px">Before the bridge, it would take me one hour to get to the market and when it rained, I would have to turn back, because the river was too dangerous to cross. Now it only takes me 3 minutes whether it's raining or not.</p>
+          </div>
+          <div style='height: 45px'></div>
           <img src='./data/Brand Guide and Assets/Photos/Rwanda_Suspended_Women Crossing.jpg' width='100%'/>
-          <img src='./data/Brand Guide and Assets/Photos/Rwanda_Suspension_Families Crossing to Market.jpg' width='48%'/>
+          <div style='height: 15px'></div>
           <img src='./data/Brand Guide and Assets/Photos/Rwanda_Suspended_Children Crossing.jpg' width='48%'/>
+          <img src='./data/Brand Guide and Assets/Photos/Rwanda_Suspension_Families Crossing to Market.jpg' width='48%'/>
         </div>
       </div>
 
       <div class='footer'>
-        <h3>Help B2P connect rural communities and improve lives</h3>
+        <h3>Rural isolation is a root cause of poverty</h3>
+        <h3>Connection is the foundation for opportunity</h3>
         <div>
           <input type="button" class='btn btn-learn-more' value='Learn more'/>
           <input type="button"class='btn btn-donate' value='Donate'/>
@@ -404,6 +492,7 @@
       let panel = d3.select(".bridge-container-"+data['Site name'])
 
       panel.append("div").append('h2')
+        .attr("class", "title")
         .html(data['Site name'])
 
       let date = panel.append("div").attr("class", "stats")
@@ -417,12 +506,23 @@
         .style('margin', '2px 0px')
         .html(data['Bridge completion date'])
 
+      let est = panel.append("div").attr("class", "stats")
+
+      est.append('p')
+        .style('font-size', '8px')
+        .style('margin', '0px')
+        .html('Est. people served')
+           
+      est.append('p')
+        .style('margin', '2px 0px')
+        .html(data['Estimated individuals directly served'])
+
       let count = panel.append("div").attr("class", "stats")
 
       count.append('p')
         .style('font-size', '8px')
         .style('margin', '0px')
-        .html('People count per survey day')
+        .html('People counted per day')
            
       count.append('p')
         .style('margin', '2px 0px')
